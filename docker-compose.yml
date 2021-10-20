@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  difficalcy-osu:
+    image: difficalcy-osu
+    ports:
+      - 5000:80
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - BEATMAP_DIRECTORY=/app/beatmaps/external
+      - REDIS_CONFIGURATION=cache:6379
+    volumes:
+      - ${BEATMAP_DIRECTORY}:/app/beatmaps/external
+  cache:
+    image: redis:6
+    ports:
+      - 6379:6379
