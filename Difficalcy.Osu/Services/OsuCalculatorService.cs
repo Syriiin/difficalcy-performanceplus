@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Difficalcy.Osu.Models;
@@ -25,9 +24,9 @@ namespace Difficalcy.Osu.Services
         private OsuRuleset OsuRuleset { get; } = new OsuRuleset();
 
         public override string RulesetName => OsuRuleset.Description;
-        public override string CalculatorName => "Official osu!";
-        public override string CalculatorPackage => Assembly.GetAssembly(typeof(OsuRuleset)).GetName().Name;
-        public override string CalculatorVersion => Assembly.GetAssembly(typeof(OsuRuleset)).GetName().Version.ToString();
+        public override string CalculatorName => "PerformancePlus (PP+)";
+        public override string CalculatorPackage => "https://github.com/Syriiin/osu.git";
+        public override string CalculatorVersion => "f32875ab59108ece030f6bd8373a6368636356c2";
 
         public OsuCalculatorService(IConfiguration configuration, IConnectionMultiplexer redis) : base(redis)
         {
@@ -58,11 +57,14 @@ namespace Difficalcy.Osu.Services
                 StarRating = difficultyAttributes.StarRating,
                 MaxCombo = difficultyAttributes.MaxCombo,
                 AimStrain = difficultyAttributes.AimStrain,
+                JumpAimStrain = difficultyAttributes.JumpAimStrain,
+                FlowAimStrain = difficultyAttributes.FlowAimStrain,
+                PrecisionStrain = difficultyAttributes.PrecisionStrain,
                 SpeedStrain = difficultyAttributes.SpeedStrain,
-                FlashlightRating = difficultyAttributes.FlashlightRating,
+                StaminaStrain = difficultyAttributes.StaminaStrain,
+                AccuracyStrain = difficultyAttributes.AccuracyStrain,
                 ApproachRate = difficultyAttributes.ApproachRate,
                 OverallDifficulty = difficultyAttributes.OverallDifficulty,
-                DrainRate = difficultyAttributes.DrainRate,
                 HitCircleCount = difficultyAttributes.HitCircleCount,
                 SpinnerCount = difficultyAttributes.SpinnerCount
             }));
@@ -75,8 +77,12 @@ namespace Difficalcy.Osu.Services
             {
                 Total = osuDifficultyAttributes.StarRating,
                 Aim = osuDifficultyAttributes.AimStrain,
+                JumpAim = osuDifficultyAttributes.JumpAimStrain,
+                FlowAim = osuDifficultyAttributes.FlowAimStrain,
+                Precision = osuDifficultyAttributes.PrecisionStrain,
                 Speed = osuDifficultyAttributes.SpeedStrain,
-                Flashlight = osuDifficultyAttributes.FlashlightRating
+                Stamina = osuDifficultyAttributes.StaminaStrain,
+                Accuracy = osuDifficultyAttributes.AccuracyStrain
             };
         }
 
@@ -111,9 +117,12 @@ namespace Difficalcy.Osu.Services
             {
                 Total = performance,
                 Aim = categoryAttributes["Aim"],
+                JumpAim = categoryAttributes["Jump Aim"],
+                FlowAim = categoryAttributes["Flow Aim"],
+                Precision = categoryAttributes["Precision"],
                 Speed = categoryAttributes["Speed"],
-                Accuracy = categoryAttributes["Accuracy"],
-                Flashlight = categoryAttributes["Flashlight"]
+                Stamina = categoryAttributes["Stamina"],
+                Accuracy = categoryAttributes["Accuracy"]
             };
         }
 

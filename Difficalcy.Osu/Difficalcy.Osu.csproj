@@ -5,11 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ppy.osu.Game.Rulesets.Osu" Version="2021.1016.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="../difficalcy/Difficalcy/Difficalcy.csproj" />
+    <ProjectReference Include="../osu/osu.Game.Rulesets.Osu/osu.Game.Rulesets.Osu.csproj" />
   </ItemGroup>
 
 </Project>
