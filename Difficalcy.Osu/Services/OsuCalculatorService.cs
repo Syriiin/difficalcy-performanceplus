@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Difficalcy.Models;
 using Difficalcy.Osu.Models;
 using Difficalcy.Services;
 using Microsoft.Extensions.Configuration;
@@ -20,30 +21,37 @@ namespace Difficalcy.Osu.Services
 {
     public class OsuCalculatorService : CalculatorService<OsuScore, OsuDifficulty, OsuPerformance, OsuCalculation>
     {
-        private readonly IConfiguration _configuration;
+        private readonly IBeatmapProvider _beatmapProvider;
         private OsuRuleset OsuRuleset { get; } = new OsuRuleset();
 
-        public override string RulesetName => OsuRuleset.Description;
-        public override string CalculatorName => "PerformancePlus (PP+)";
-        public override string CalculatorPackage => "https://github.com/Syriiin/osu.git";
-        public override string CalculatorVersion => "f32875ab59108ece030f6bd8373a6368636356c2";
-
-        public OsuCalculatorService(IConfiguration configuration, IConnectionMultiplexer redis) : base(redis)
+        public override CalculatorInfo Info
         {
-            _configuration = configuration;
-        }
-
-        public override async Task EnsureBeatmap(int beatmapId)
-        {
-            var beatmapPath = Path.Combine(_configuration["BEATMAP_DIRECTORY"], beatmapId.ToString());
-            if (!File.Exists(beatmapPath))
+            get
             {
-                var myWebClient = new WebClient();
-                await myWebClient.DownloadFileTaskAsync($"https://osu.ppy.sh/osu/{beatmapId}", beatmapPath);
+                var packageName = "https://github.com/Syriiin/osu";
+                var packageVersion = "f32875ab59108ece030f6bd8373a6368636356c2";
+                return new CalculatorInfo
+                {
+                    RulesetName = OsuRuleset.Description,
+                    CalculatorName = "PerformancePlus (PP+)",
+                    CalculatorPackage = packageName,
+                    CalculatorVersion = packageVersion,
+                    CalculatorUrl = $"{packageName}/tree/{packageVersion}"
+                };
             }
         }
 
-        public override (object, string) CalculateDifficulty(OsuScore score)
+        public OsuCalculatorService(ICache cache, IBeatmapProvider beatmapProvider) : base(cache)
+        {
+            _beatmapProvider = beatmapProvider;
+        }
+
+        protected override async Task EnsureBeatmap(string beatmapId)
+        {
+            await _beatmapProvider.EnsureBeatmap(beatmapId);
+        }
+
+        protected override (object, string) CalculateDifficultyAttributes(OsuScore score)
         {
             var workingBeatmap = getWorkingBeatmap(score.BeatmapId);
             var mods = OsuRuleset.ConvertFromLegacyMods((LegacyMods)(score.Mods ?? 0)).ToArray();
@@ -70,7 +78,7 @@ namespace Difficalcy.Osu.Services
             }));
         }
 
-        public override OsuDifficulty GetDifficulty(object difficultyAttributes)
+        protected override OsuDifficulty GetDifficultyFromDifficultyAttributes(object difficultyAttributes)
         {
             var osuDifficultyAttributes = (OsuDifficultyAttributes)difficultyAttributes;
             return new OsuDifficulty()
@@ -86,12 +94,12 @@ namespace Difficalcy.Osu.Services
             };
         }
 
-        public override object DeserialiseDifficultyAttributes(string difficultyAttributesJson)
+        protected override object DeserialiseDifficultyAttributes(string difficultyAttributesJson)
         {
             return JsonSerializer.Deserialize<OsuDifficultyAttributes>(difficultyAttributesJson, new JsonSerializerOptions() { IncludeFields = true });
         }
 
-        public override OsuPerformance CalculatePerformance(OsuScore score, object difficultyAttributes)
+        protected override OsuPerformance CalculatePerformance(OsuScore score, object difficultyAttributes)
         {
             var workingBeatmap = getWorkingBeatmap(score.BeatmapId);
             var mods = OsuRuleset.ConvertFromLegacyMods((LegacyMods)(score.Mods ?? 0)).ToArray();
@@ -126,7 +134,7 @@ namespace Difficalcy.Osu.Services
             };
         }
 
-        public override OsuCalculation GetCalculation(OsuDifficulty difficulty, OsuPerformance performance)
+        protected override OsuCalculation GetCalculation(OsuDifficulty difficulty, OsuPerformance performance)
         {
             return new OsuCalculation()
             {
@@ -135,10 +143,10 @@ namespace Difficalcy.Osu.Services
             };
         }
 
-        private CalculatorWorkingBeatmap getWorkingBeatmap(int beatmapId)
+        private CalculatorWorkingBeatmap getWorkingBeatmap(string beatmapId)
         {
-            var beatmapPath = Path.Combine(_configuration["BEATMAP_DIRECTORY"], beatmapId.ToString());
-            return new CalculatorWorkingBeatmap(OsuRuleset, beatmapPath, beatmapId);
+            using var beatmapStream = _beatmapProvider.GetBeatmapStream(beatmapId);
+            return new CalculatorWorkingBeatmap(OsuRuleset, beatmapStream, beatmapId);
         }
 
         private Dictionary<HitResult, int> determineHitResults(double targetAccuracy, int hitObjectCount, int countMiss, int? countMeh, int? countOk)
