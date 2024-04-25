@@ -11,5 +11,10 @@ services:
   cache:
     image: redis:6
 
+  docs:
+    build: ./docs
+    volumes:
+      - ./docs:/docs
+
 volumes:
   beatmaps:

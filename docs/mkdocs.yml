@@ -1,0 +1,55 @@
+site_name: difficalcy-performanceplus
+site_url: https://Syriiin.github.io/difficalcy-performanceplus/
+site_description: "A lazer powered osu! (performanceplus / PP+) difficulty calculation API"
+site_author: Samuel Cattini-Schultz
+repo_url: https://github.com/Syriiin/difficalcy-performanceplus
+repo_name: Syriiin/difficalcy-performanceplus
+copyright: |
+  &copy; 2024 <a href="https://github.com/Syriiin" target="_blank" rel="noopener">Samuel Cattini-Schultz</a>
+
+nav:
+  - index.md
+  - API Reference: api-reference.md
+
+theme:
+  name: material
+  language: en
+
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.indexes
+    - content.code.copy
+
+  icon:
+    repo: fontawesome/brands/github
+    logo: material/calculator
+
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+
+plugins:
+  - search
+  - neoteroi.mkdocsoad:
+      use_pymdownx: true
+
+extra_css:
+  - "css/mkdocsoad.css"

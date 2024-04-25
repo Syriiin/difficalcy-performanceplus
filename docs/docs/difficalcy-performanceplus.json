@@ -1,0 +1,542 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Difficalcy.PerformancePlus",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/info": {
+      "get": {
+        "tags": [
+          "OsuCalculator"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalculatorInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/difficulty": {
+      "get": {
+        "tags": [
+          "OsuCalculator"
+        ],
+        "parameters": [
+          {
+            "name": "Accuracy",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Combo",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Misses",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Mehs",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Oks",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "BeatmapId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Mods",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OsuDifficulty"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/performance": {
+      "get": {
+        "tags": [
+          "OsuCalculator"
+        ],
+        "parameters": [
+          {
+            "name": "Accuracy",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Combo",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Misses",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Mehs",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Oks",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "BeatmapId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Mods",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OsuPerformance"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/calculation": {
+      "get": {
+        "tags": [
+          "OsuCalculator"
+        ],
+        "parameters": [
+          {
+            "name": "Accuracy",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Combo",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Misses",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Mehs",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Oks",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "BeatmapId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Mods",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OsuCalculation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/batch/difficulty": {
+      "post": {
+        "tags": [
+          "OsuCalculator"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OsuScore"
+                },
+                "nullable": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OsuDifficulty"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/batch/performance": {
+      "post": {
+        "tags": [
+          "OsuCalculator"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OsuScore"
+                },
+                "nullable": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OsuPerformance"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/batch/calculation": {
+      "post": {
+        "tags": [
+          "OsuCalculator"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OsuScore"
+                },
+                "nullable": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OsuCalculation"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CalculatorInfo": {
+        "type": "object",
+        "properties": {
+          "rulesetName": {
+            "type": "string",
+            "nullable": true
+          },
+          "calculatorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "calculatorPackage": {
+            "type": "string",
+            "nullable": true
+          },
+          "calculatorVersion": {
+            "type": "string",
+            "nullable": true
+          },
+          "calculatorUrl": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OsuDifficulty": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number",
+            "format": "double"
+          },
+          "aim": {
+            "type": "number",
+            "format": "double"
+          },
+          "jumpAim": {
+            "type": "number",
+            "format": "double"
+          },
+          "flowAim": {
+            "type": "number",
+            "format": "double"
+          },
+          "precision": {
+            "type": "number",
+            "format": "double"
+          },
+          "speed": {
+            "type": "number",
+            "format": "double"
+          },
+          "stamina": {
+            "type": "number",
+            "format": "double"
+          },
+          "accuracy": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OsuPerformance": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number",
+            "format": "double"
+          },
+          "aim": {
+            "type": "number",
+            "format": "double"
+          },
+          "jumpAim": {
+            "type": "number",
+            "format": "double"
+          },
+          "flowAim": {
+            "type": "number",
+            "format": "double"
+          },
+          "precision": {
+            "type": "number",
+            "format": "double"
+          },
+          "speed": {
+            "type": "number",
+            "format": "double"
+          },
+          "stamina": {
+            "type": "number",
+            "format": "double"
+          },
+          "accuracy": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OsuCalculation": {
+        "type": "object",
+        "properties": {
+          "difficulty": {
+            "$ref": "#/components/schemas/OsuDifficulty"
+          },
+          "performance": {
+            "$ref": "#/components/schemas/OsuPerformance"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OsuScore": {
+        "required": [
+          "beatmapId"
+        ],
+        "type": "object",
+        "properties": {
+          "beatmapId": {
+            "type": "string"
+          },
+          "mods": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "accuracy": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "combo": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "misses": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "mehs": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "oks": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
