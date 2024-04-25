@@ -9,4 +9,8 @@
     <ProjectReference Include="../osu/osu.Game.Rulesets.Osu/osu.Game.Rulesets.Osu.csproj" />
   </ItemGroup>
 
+  <ItemGroup Label="Resources">
+    <EmbeddedResource Include="Resources\**\*.*" />
+  </ItemGroup>
+
 </Project>
