@@ -1,0 +1,12 @@
+services:
+  e2e-test-runner:
+    build: ./e2e
+    environment:
+      - DIFFICALCY_PERFORMANCEPLUS_HOST=difficalcy-performanceplus:80
+    depends_on:
+      - difficalcy-performanceplus
+
+  difficalcy-performanceplus:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - USE_TEST_BEATMAP_PROVIDER=true

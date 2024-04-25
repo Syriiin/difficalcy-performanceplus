@@ -1,0 +1,5 @@
+services:
+  tooling:
+    build:
+      context: .
+      dockerfile: ./tooling.Dockerfile

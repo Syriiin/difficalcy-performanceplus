@@ -1,0 +1,3 @@
+services:
+  difficalcy-performanceplus:
+    image: ghcr.io/syriiin/difficalcy-performanceplus:${VERSION}
