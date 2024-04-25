@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Difficalcy.Osu
+namespace Difficalcy.PerformancePlus
 {
     public class Program
     {

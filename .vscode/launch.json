@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Difficalcy.Osu/bin/Debug/net5.0/Difficalcy.Osu.dll",
+            "program": "${workspaceFolder}/Difficalcy.PerformancePlus/bin/Debug/net5.0/Difficalcy.PerformancePlus.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/Difficalcy.Osu",
+            "cwd": "${workspaceFolder}/Difficalcy.PerformancePlus",
             "stopAtEntry": false,
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",

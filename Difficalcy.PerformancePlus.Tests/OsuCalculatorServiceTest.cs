@@ -1,9 +1,9 @@
-using Difficalcy.Osu.Models;
-using Difficalcy.Osu.Services;
+using Difficalcy.PerformancePlus.Models;
+using Difficalcy.PerformancePlus.Services;
 using Difficalcy.Services;
 using Difficalcy.Tests;
 
-namespace Difficalcy.Osu.Tests;
+namespace Difficalcy.PerformancePlus.Tests;
 
 public class OsuCalculatorServiceTest : CalculatorServiceTest<OsuScore, OsuDifficulty, OsuPerformance, OsuCalculation>
 {

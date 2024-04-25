@@ -1,6 +1,6 @@
 using Difficalcy.Models;
 
-namespace Difficalcy.Osu.Models
+namespace Difficalcy.PerformancePlus.Models
 {
     public record OsuPerformance : Performance
     {

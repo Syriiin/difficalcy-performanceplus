@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\difficalcy\Difficalcy.Tests\Difficalcy.Tests.csproj" />
-    <ProjectReference Include="..\Difficalcy.Osu\Difficalcy.Osu.csproj" />
+    <ProjectReference Include="..\Difficalcy.PerformancePlus\Difficalcy.PerformancePlus.csproj" />
   </ItemGroup>
 
 </Project>

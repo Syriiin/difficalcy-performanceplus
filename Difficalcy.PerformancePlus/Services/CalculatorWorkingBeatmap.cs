@@ -7,7 +7,7 @@ using osu.Game.IO;
 using osu.Game.Rulesets;
 using osu.Game.Skinning;
 
-namespace Difficalcy.Osu.Services
+namespace Difficalcy.PerformancePlus.Services
 {
     public class CalculatorWorkingBeatmap : WorkingBeatmap
     {

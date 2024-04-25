@@ -6,7 +6,7 @@ using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Difficalcy.Models;
-using Difficalcy.Osu.Models;
+using Difficalcy.PerformancePlus.Models;
 using Difficalcy.Services;
 using Microsoft.Extensions.Configuration;
 using osu.Game.Beatmaps.Legacy;
@@ -17,7 +17,7 @@ using osu.Game.Rulesets.Scoring;
 using osu.Game.Scoring;
 using StackExchange.Redis;
 
-namespace Difficalcy.Osu.Services
+namespace Difficalcy.PerformancePlus.Services
 {
     public class OsuCalculatorService : CalculatorService<OsuScore, OsuDifficulty, OsuPerformance, OsuCalculation>
     {

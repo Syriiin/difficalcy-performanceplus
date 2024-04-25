@@ -10,13 +10,13 @@ WORKDIR /src
 
 COPY difficalcy/Difficalcy/Difficalcy.csproj ./difficalcy/Difficalcy/
 RUN dotnet restore difficalcy/Difficalcy/Difficalcy.csproj
-COPY Difficalcy.Osu/Difficalcy.Osu.csproj ./Difficalcy.Osu/
-RUN dotnet restore Difficalcy.Osu/Difficalcy.Osu.csproj
+COPY Difficalcy.PerformancePlus/Difficalcy.PerformancePlus.csproj ./Difficalcy.PerformancePlus/
+RUN dotnet restore Difficalcy.PerformancePlus/Difficalcy.PerformancePlus.csproj
 
 COPY . .
-RUN dotnet build Difficalcy.Osu/Difficalcy.Osu.csproj -c Release -o /app/build
+RUN dotnet build Difficalcy.PerformancePlus/Difficalcy.PerformancePlus.csproj -c Release -o /app/build
 
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/build .
-ENTRYPOINT ["dotnet", "Difficalcy.Osu.dll"]
+ENTRYPOINT ["dotnet", "Difficalcy.PerformancePlus.dll"]

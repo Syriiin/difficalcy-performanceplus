@@ -1,8 +1,8 @@
 using Difficalcy.Controllers;
-using Difficalcy.Osu.Models;
-using Difficalcy.Osu.Services;
+using Difficalcy.PerformancePlus.Models;
+using Difficalcy.PerformancePlus.Services;
 
-namespace Difficalcy.Osu.Controllers
+namespace Difficalcy.PerformancePlus.Controllers
 {
     public class OsuCalculatorController : CalculatorController<OsuScore, OsuDifficulty, OsuPerformance, OsuCalculation, OsuCalculatorService>
     {

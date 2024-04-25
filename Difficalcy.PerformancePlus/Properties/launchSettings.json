@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Difficalcy.Osu": {
+    "Difficalcy.PerformancePlus": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,
