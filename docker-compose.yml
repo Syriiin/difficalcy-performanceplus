@@ -1,6 +1,8 @@
 services:
   difficalcy-performanceplus:
-    build: .
+    build:
+      context: .
+      target: difficalcy-performanceplus
     environment:
       - REDIS_CONFIGURATION=cache:6379
     volumes:
