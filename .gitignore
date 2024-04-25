@@ -268,3 +268,6 @@ __pycache__/
 tools/
 
 .env
+
+# https://github.com/microsoft/vscode-dotnettools/issues/1008
+.mono/
