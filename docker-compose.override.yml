@@ -1,0 +1,6 @@
+services:
+  difficalcy-performanceplus:
+    ports:
+      - 5004:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
