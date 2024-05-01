@@ -53,13 +53,13 @@ namespace Difficalcy.PerformancePlus.Services
             {
                 difficultyAttributes.StarRating,
                 difficultyAttributes.MaxCombo,
-                difficultyAttributes.AimStrain,
-                difficultyAttributes.JumpAimStrain,
-                difficultyAttributes.FlowAimStrain,
-                difficultyAttributes.PrecisionStrain,
-                difficultyAttributes.SpeedStrain,
-                difficultyAttributes.StaminaStrain,
-                difficultyAttributes.AccuracyStrain,
+                difficultyAttributes.AimDifficulty,
+                difficultyAttributes.JumpAimDifficulty,
+                difficultyAttributes.FlowAimDifficulty,
+                difficultyAttributes.PrecisionDifficulty,
+                difficultyAttributes.SpeedDifficulty,
+                difficultyAttributes.StaminaDifficulty,
+                difficultyAttributes.AccuracyDifficulty,
                 difficultyAttributes.ApproachRate,
                 difficultyAttributes.OverallDifficulty,
                 difficultyAttributes.HitCircleCount,
@@ -92,14 +92,13 @@ namespace Difficalcy.PerformancePlus.Services
                 Mods = mods
             };
 
-            var performanceCalculator = OsuRuleset.CreatePerformanceCalculator(osuDifficultyAttributes, scoreInfo);
-            var performanceAttributes = new Dictionary<string, double>();
-            var performance = performanceCalculator.Calculate(performanceAttributes);
+            var performanceCalculator = OsuRuleset.CreatePerformanceCalculator();
+            var performanceAttributes = performanceCalculator.Calculate(scoreInfo, osuDifficultyAttributes) as OsuPerformanceAttributes;
 
             return new OsuCalculation()
             {
                 Difficulty = GetDifficultyFromDifficultyAttributes(osuDifficultyAttributes),
-                Performance = GetPerformanceFromPerformanceAttributes(performance, performanceAttributes),
+                Performance = GetPerformanceFromPerformanceAttributes(performanceAttributes),
                 Accuracy = accuracy,
                 Combo = combo
             };
@@ -140,28 +139,28 @@ namespace Difficalcy.PerformancePlus.Services
             return new OsuDifficulty()
             {
                 Total = difficultyAttributes.StarRating,
-                Aim = difficultyAttributes.AimStrain,
-                JumpAim = difficultyAttributes.JumpAimStrain,
-                FlowAim = difficultyAttributes.FlowAimStrain,
-                Precision = difficultyAttributes.PrecisionStrain,
-                Speed = difficultyAttributes.SpeedStrain,
-                Stamina = difficultyAttributes.StaminaStrain,
-                Accuracy = difficultyAttributes.AccuracyStrain
+                Aim = difficultyAttributes.AimDifficulty,
+                JumpAim = difficultyAttributes.JumpAimDifficulty,
+                FlowAim = difficultyAttributes.FlowAimDifficulty,
+                Precision = difficultyAttributes.PrecisionDifficulty,
+                Speed = difficultyAttributes.SpeedDifficulty,
+                Stamina = difficultyAttributes.StaminaDifficulty,
+                Accuracy = difficultyAttributes.AccuracyDifficulty
             };
         }
 
-        private static OsuPerformance GetPerformanceFromPerformanceAttributes(double total, Dictionary<string, double> performanceAttributes)
+        private static OsuPerformance GetPerformanceFromPerformanceAttributes(OsuPerformanceAttributes performanceAttributes)
         {
             return new OsuPerformance()
             {
-                Total = total,
-                Aim = performanceAttributes["Aim"],
-                JumpAim = performanceAttributes["Jump Aim"],
-                FlowAim = performanceAttributes["Flow Aim"],
-                Precision = performanceAttributes["Precision"],
-                Speed = performanceAttributes["Speed"],
-                Stamina = performanceAttributes["Stamina"],
-                Accuracy = performanceAttributes["Accuracy"]
+                Total = performanceAttributes.Total,
+                Aim = performanceAttributes.Aim,
+                JumpAim = performanceAttributes.JumpAim,
+                FlowAim = performanceAttributes.FlowAim,
+                Precision = performanceAttributes.Precision,
+                Speed = performanceAttributes.Speed,
+                Stamina = performanceAttributes.Stamina,
+                Accuracy = performanceAttributes.Accuracy
             };
         }
     }
