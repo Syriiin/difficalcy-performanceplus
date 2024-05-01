@@ -4,7 +4,7 @@ This is a [difficalcy](https://github.com/Syriiin/difficalcy) calculator for the
 
 The core PP+ algorithm was originally developed by [Drezi](https://osu.ppy.sh/users/3936645) as part of the [PP+ project](https://syrin.me/pp+/).
 
-Later, I ([Syrin](https://osu.ppy.sh/users/5701575)) [ported the algorithm to lazer](https://github.com/Syriiin/osu/tree/performanceplus) to release it open source.
+Later, with Drezi's permission, I ([Syrin](https://osu.ppy.sh/users/5701575)) [ported the algorithm to lazer](https://github.com/Syriiin/osu/tree/performanceplus) to release it open source.
 
 This project can be used to run the PP+ calculator easily within your own projects.
 
@@ -26,6 +26,8 @@ Get your lazer powered calculations:
 
 ```json
 {
+  "accuracy": 1,
+  "combo": 2402,
   "difficulty": {
     "aim": 3.6287549779248565,
     "jumpAim": 3.330914733838406,

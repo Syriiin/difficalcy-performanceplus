@@ -24,172 +24,6 @@
         }
       }
     },
-    "/api/difficulty": {
-      "get": {
-        "tags": [
-          "OsuCalculator"
-        ],
-        "parameters": [
-          {
-            "name": "Accuracy",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double",
-              "nullable": true
-            }
-          },
-          {
-            "name": "Combo",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "nullable": true
-            }
-          },
-          {
-            "name": "Misses",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "nullable": true
-            }
-          },
-          {
-            "name": "Mehs",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "nullable": true
-            }
-          },
-          {
-            "name": "Oks",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "nullable": true
-            }
-          },
-          {
-            "name": "BeatmapId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Mods",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "nullable": true
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OsuDifficulty"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/performance": {
-      "get": {
-        "tags": [
-          "OsuCalculator"
-        ],
-        "parameters": [
-          {
-            "name": "Accuracy",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double",
-              "nullable": true
-            }
-          },
-          {
-            "name": "Combo",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "nullable": true
-            }
-          },
-          {
-            "name": "Misses",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "nullable": true
-            }
-          },
-          {
-            "name": "Mehs",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "nullable": true
-            }
-          },
-          {
-            "name": "Oks",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "nullable": true
-            }
-          },
-          {
-            "name": "BeatmapId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Mods",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "nullable": true
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OsuPerformance"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/calculation": {
       "get": {
         "tags": [
@@ -197,18 +31,11 @@
         ],
         "parameters": [
           {
-            "name": "Accuracy",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double",
-              "nullable": true
-            }
-          },
-          {
             "name": "Combo",
             "in": "query",
             "schema": {
+              "maximum": 2147483647,
+              "minimum": 0,
               "type": "integer",
               "format": "int32",
               "nullable": true
@@ -218,27 +45,30 @@
             "name": "Misses",
             "in": "query",
             "schema": {
+              "maximum": 2147483647,
+              "minimum": 0,
               "type": "integer",
-              "format": "int32",
-              "nullable": true
+              "format": "int32"
             }
           },
           {
             "name": "Mehs",
             "in": "query",
             "schema": {
+              "maximum": 2147483647,
+              "minimum": 0,
               "type": "integer",
-              "format": "int32",
-              "nullable": true
+              "format": "int32"
             }
           },
           {
             "name": "Oks",
             "in": "query",
             "schema": {
+              "maximum": 2147483647,
+              "minimum": 0,
               "type": "integer",
-              "format": "int32",
-              "nullable": true
+              "format": "int32"
             }
           },
           {
@@ -253,9 +83,10 @@
             "name": "Mods",
             "in": "query",
             "schema": {
+              "maximum": 2147483647,
+              "minimum": 0,
               "type": "integer",
-              "format": "int32",
-              "nullable": true
+              "format": "int32"
             }
           }
         ],
@@ -266,76 +97,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/OsuCalculation"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/batch/difficulty": {
-      "post": {
-        "tags": [
-          "OsuCalculator"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/OsuScore"
-                },
-                "nullable": true
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OsuDifficulty"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/batch/performance": {
-      "post": {
-        "tags": [
-          "OsuCalculator"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/OsuScore"
-                },
-                "nullable": true
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OsuPerformance"
-                  }
                 }
               }
             }
@@ -491,6 +252,14 @@
           },
           "performance": {
             "$ref": "#/components/schemas/OsuPerformance"
+          },
+          "accuracy": {
+            "type": "number",
+            "format": "double"
+          },
+          "combo": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -505,34 +274,35 @@
             "type": "string"
           },
           "mods": {
+            "maximum": 2147483647,
+            "minimum": 0,
             "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "accuracy": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
+            "format": "int32"
           },
           "combo": {
+            "maximum": 2147483647,
+            "minimum": 0,
             "type": "integer",
             "format": "int32",
             "nullable": true
           },
           "misses": {
+            "maximum": 2147483647,
+            "minimum": 0,
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "mehs": {
+            "maximum": 2147483647,
+            "minimum": 0,
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "oks": {
+            "maximum": 2147483647,
+            "minimum": 0,
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           }
         },
         "additionalProperties": false
