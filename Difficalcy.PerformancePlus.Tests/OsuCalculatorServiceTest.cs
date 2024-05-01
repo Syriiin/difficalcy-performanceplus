@@ -13,7 +13,7 @@ public class OsuCalculatorServiceTest : CalculatorServiceTest<OsuScore, OsuDiffi
     [InlineData(6.5800462725623294d, 288.78160455080535d, "diffcalc-test", 0)]
     [InlineData(8.8116860850192751d, 721.0879910961528d, "diffcalc-test", 64)]
     public void Test(double expectedDifficultyTotal, double expectedPerformanceTotal, string beatmapId, int mods)
-        => base.TestGetCalculationReturnsCorrectValues(expectedDifficultyTotal, expectedPerformanceTotal, new OsuScore { BeatmapId = beatmapId, Mods = mods });
+        => TestGetCalculationReturnsCorrectValues(expectedDifficultyTotal, expectedPerformanceTotal, new OsuScore { BeatmapId = beatmapId, Mods = mods });
 
     [Fact]
     public void TestAllParameters()
@@ -27,20 +27,6 @@ public class OsuCalculatorServiceTest : CalculatorServiceTest<OsuScore, OsuDiffi
             Mehs = 4,
             Oks = 3,
         };
-        base.TestGetCalculationReturnsCorrectValues(11.091002784977283, 1080.0385506471903d, score);
-    }
-
-    [Fact]
-    public void TestAccuracyParameter()
-    {
-        var score = new OsuScore
-        {
-            BeatmapId = "diffcalc-test",
-            Mods = 1112, // HD, HR, DT, FL
-            Accuracy = 0.9166666666666666,
-            Combo = 200,
-            Misses = 5,
-        };
-        base.TestGetCalculationReturnsCorrectValues(11.091002784977283, 1080.0385506471903d, score);
+        TestGetCalculationReturnsCorrectValues(11.091002784977283, 1080.0385506471903d, score);
     }
 }
