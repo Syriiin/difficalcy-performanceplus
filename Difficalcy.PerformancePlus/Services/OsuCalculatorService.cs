@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -5,6 +6,7 @@ using System.Threading.Tasks;
 using Difficalcy.Models;
 using Difficalcy.PerformancePlus.Models;
 using Difficalcy.Services;
+using Microsoft.Extensions.Configuration;
 using osu.Game.Beatmaps.Legacy;
 using osu.Game.Rulesets.Osu;
 using osu.Game.Rulesets.Osu.Difficulty;
@@ -14,8 +16,19 @@ using osu.Game.Scoring;
 
 namespace Difficalcy.PerformancePlus.Services
 {
-    public class OsuCalculatorService(ICache cache, IBeatmapProvider beatmapProvider) : CalculatorService<OsuScore, OsuDifficulty, OsuPerformance, OsuCalculation>(cache)
+    public class OsuCalculatorService : CalculatorService<OsuScore, OsuDifficulty, OsuPerformance, OsuCalculation>
     {
+        private readonly IBeatmapProvider beatmapProvider;
+        private readonly string osuCommitHash;
+
+        public OsuCalculatorService(ICache cache, IBeatmapProvider beatmapProvider, IConfiguration configuration) : base(cache)
+        {
+            this.beatmapProvider = beatmapProvider;
+            osuCommitHash = configuration["OSU_COMMIT_HASH"];
+            if (osuCommitHash.Length == 0)
+                throw new ArgumentException("OSU_COMMIT_HASH must be provided in configuration");
+        }
+
         private OsuRuleset OsuRuleset { get; } = new OsuRuleset();
 
         public override CalculatorInfo Info
@@ -23,14 +36,13 @@ namespace Difficalcy.PerformancePlus.Services
             get
             {
                 var packageName = "https://github.com/Syriiin/osu";
-                var packageVersion = "f32875ab59108ece030f6bd8373a6368636356c2";
                 return new CalculatorInfo
                 {
                     RulesetName = OsuRuleset.Description,
                     CalculatorName = "PerformancePlus (PP+)",
                     CalculatorPackage = packageName,
-                    CalculatorVersion = packageVersion,
-                    CalculatorUrl = $"{packageName}/tree/{packageVersion}"
+                    CalculatorVersion = osuCommitHash,
+                    CalculatorUrl = $"{packageName}/tree/{osuCommitHash}"
                 };
             }
         }

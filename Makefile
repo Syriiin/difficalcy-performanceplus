@@ -4,6 +4,8 @@ COMPOSE_E2E_RUN = $(COMPOSE_E2E) run --rm --build e2e-test-runner
 COMPOSE_APP_DEV = docker compose -f docker-compose.yml -f docker-compose.override.yml
 COMPOSE_PUBLISH = docker compose -f docker-compose.yml -f docker-compose.override.publish.yml
 
+export OSU_COMMIT_HASH = $(shell git rev-parse HEAD:osu)
+
 help:	## Show this help
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 

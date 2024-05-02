@@ -3,6 +3,8 @@ services:
     build:
       context: .
       target: difficalcy-performanceplus
+      args:
+        - OSU_COMMIT_HASH
     environment:
       - REDIS_CONFIGURATION=cache:6379
     volumes:
