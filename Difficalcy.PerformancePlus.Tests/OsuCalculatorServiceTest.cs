@@ -2,12 +2,22 @@ using Difficalcy.PerformancePlus.Models;
 using Difficalcy.PerformancePlus.Services;
 using Difficalcy.Services;
 using Difficalcy.Tests;
+using Microsoft.Extensions.Configuration;
 
 namespace Difficalcy.PerformancePlus.Tests;
 
 public class OsuCalculatorServiceTest : CalculatorServiceTest<OsuScore, OsuDifficulty, OsuPerformance, OsuCalculation>
 {
-    protected override CalculatorService<OsuScore, OsuDifficulty, OsuPerformance, OsuCalculation> CalculatorService { get; } = new OsuCalculatorService(new InMemoryCache(), new TestBeatmapProvider(typeof(OsuCalculatorService).Assembly.GetName().Name));
+    public OsuCalculatorServiceTest()
+    {
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string, string?> {
+            {"OSU_COMMIT_HASH", "testhash"},
+        }).Build();
+        CalculatorService = new OsuCalculatorService(new InMemoryCache(), new TestBeatmapProvider(typeof(OsuCalculatorService).Assembly.GetName().Name), configuration);
+    }
+
+    protected override CalculatorService<OsuScore, OsuDifficulty, OsuPerformance, OsuCalculation> CalculatorService { get; }
 
     [Theory]
     [InlineData(6.578701261037768d, 288.6125590551904d, "diffcalc-test", 0)]

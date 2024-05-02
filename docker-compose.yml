@@ -3,15 +3,19 @@ services:
     build:
       context: .
       target: difficalcy-performanceplus
+      args:
+        - OSU_COMMIT_HASH
     environment:
       - REDIS_CONFIGURATION=cache:6379
     volumes:
-      - beatmaps:/app/beatmaps
+      - beatmaps:/beatmaps
     depends_on:
       - cache
 
   cache:
-    image: redis:6
+    image: redis:7
+    volumes:
+      - redis-data:/data
 
   docs:
     build: ./docs
@@ -20,3 +24,4 @@ services:
 
 volumes:
   beatmaps:
+  redis-data:
