@@ -11,7 +11,8 @@ ARG OSU_COMMIT_HASH
 ENV OSU_COMMIT_HASH=${OSU_COMMIT_HASH}
 
 VOLUME ${BEATMAP_DIRECTORY}
-RUN mkdir ${BEATMAP_DIRECTORY} && chown -R app:app ${BEATMAP_DIRECTORY}
+# chmod 777 so that this volume can be read/written by other containers that might use different uids
+RUN mkdir ${BEATMAP_DIRECTORY} && chmod -R 777 ${BEATMAP_DIRECTORY}
 
 USER app
 
