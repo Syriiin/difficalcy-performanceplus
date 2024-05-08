@@ -1,0 +1,32 @@
+name: deploy-docs
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: make build-docs
+      - name: Upload artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: docs
+          path: docs/site/
+
+  deploy:
+    needs: build
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: docs
