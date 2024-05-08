@@ -31,6 +31,9 @@ clean-dev:	## Cleans development environment
 update-openapi-schemas:	## Updates OpenAPI schemas in docs site
 	curl localhost:5004/swagger/v1/swagger.json -o docs/docs/difficalcy-performanceplus.json
 
+build-docs:	## Builds documentation site
+	$(COMPOSE_RUN_DOCS) build --strict --clean
+
 # TODO: move gh into tooling container (requires env var considerations)
 VERSION =
 release:	## Pushes docker images to ghcr.io and create a github release
