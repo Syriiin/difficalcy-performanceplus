@@ -51,4 +51,4 @@ Get your lazer powered calculations:
 }
 ```
 
-See [the difficalcy Getting Started page](https://Syriiin.github.io/difficalcy/getting-started.md) for a full example setup.
+See [the difficalcy Getting Started page](https://difficalcy.syrin.me/getting-started) for a full example setup.
