@@ -2,6 +2,7 @@ COMPOSE_TOOLING_RUN = docker compose -f docker-compose.tooling.yml run --rm --bu
 COMPOSE_E2E = docker compose -f docker-compose.yml -f docker-compose.override.e2e.yml
 COMPOSE_E2E_RUN = $(COMPOSE_E2E) run --rm --build e2e-test-runner
 COMPOSE_APP_DEV = docker compose -f docker-compose.yml -f docker-compose.override.yml
+COMPOSE_RUN_DOCS = docker compose -f docker-compose.yml -f docker-compose.override.yml run docs
 COMPOSE_PUBLISH = docker compose -f docker-compose.yml -f docker-compose.override.publish.yml
 
 export OSU_COMMIT_HASH = $(shell git rev-parse HEAD:osu)
