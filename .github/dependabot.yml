@@ -1,0 +1,8 @@
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directories:
+      - "/Difficalcy.PerformancePlus"
+      - "/Difficalcy.PerformancePlus.Tests"
+    schedule:
+      interval: "daily"
