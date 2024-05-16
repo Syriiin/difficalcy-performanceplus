@@ -13,9 +13,9 @@ namespace Difficalcy.PerformancePlus.Services
     {
         private readonly Beatmap _beatmap;
 
-        public CalculatorWorkingBeatmap(Ruleset ruleset, Stream beatmapStream, string beatmapId) : this(ruleset, ReadFromStream(beatmapStream), beatmapId) { }
+        public CalculatorWorkingBeatmap(Ruleset ruleset, Stream beatmapStream) : this(ruleset, ReadFromStream(beatmapStream)) { }
 
-        private CalculatorWorkingBeatmap(Ruleset ruleset, Beatmap beatmap, string beatmapId) : base(beatmap.BeatmapInfo, null)
+        private CalculatorWorkingBeatmap(Ruleset ruleset, Beatmap beatmap) : base(beatmap.BeatmapInfo, null)
         {
             _beatmap = beatmap;
 

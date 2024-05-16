@@ -119,7 +119,7 @@ namespace Difficalcy.PerformancePlus.Services
         private CalculatorWorkingBeatmap GetWorkingBeatmap(string beatmapId)
         {
             using var beatmapStream = beatmapProvider.GetBeatmapStream(beatmapId);
-            return new CalculatorWorkingBeatmap(OsuRuleset, beatmapStream, beatmapId);
+            return new CalculatorWorkingBeatmap(OsuRuleset, beatmapStream);
         }
 
         private static Dictionary<HitResult, int> GetHitResults(int hitResultCount, int countMiss, int countMeh, int countOk)
