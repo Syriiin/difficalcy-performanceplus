@@ -1,4 +1,4 @@
-# difficalcy-osu
+# difficalcy-performanceplus
 
 This is a [difficalcy](https://github.com/Syriiin/difficalcy) calculator for the PP+ (PerformancePlus) algorithm.
 
