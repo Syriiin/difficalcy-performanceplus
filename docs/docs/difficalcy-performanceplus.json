@@ -12,7 +12,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -37,8 +37,7 @@
               "maximum": 2147483647,
               "minimum": 0,
               "type": "integer",
-              "format": "int32",
-              "nullable": true
+              "format": "int32"
             }
           },
           {
@@ -92,7 +91,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -116,15 +115,14 @@
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/OsuScore"
-                },
-                "nullable": true
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -164,6 +162,26 @@
           "calculatorUrl": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OsuCalculation": {
+        "type": "object",
+        "properties": {
+          "difficulty": {
+            "$ref": "#/components/schemas/OsuDifficulty"
+          },
+          "performance": {
+            "$ref": "#/components/schemas/OsuPerformance"
+          },
+          "accuracy": {
+            "type": "number",
+            "format": "double"
+          },
+          "combo": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -244,26 +262,6 @@
         },
         "additionalProperties": false
       },
-      "OsuCalculation": {
-        "type": "object",
-        "properties": {
-          "difficulty": {
-            "$ref": "#/components/schemas/OsuDifficulty"
-          },
-          "performance": {
-            "$ref": "#/components/schemas/OsuPerformance"
-          },
-          "accuracy": {
-            "type": "number",
-            "format": "double"
-          },
-          "combo": {
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
       "OsuScore": {
         "required": [
           "beatmapId"
@@ -271,6 +269,7 @@
         "type": "object",
         "properties": {
           "beatmapId": {
+            "minLength": 1,
             "type": "string"
           },
           "mods": {
