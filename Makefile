@@ -50,6 +50,9 @@ endif
 ifndef GITHUB_USERNAME
 	$(error GITHUB_USERNAME env var is not set)
 endif
+ifneq "$(shell git branch --show-current)" "master"
+	$(error This command can only be run on the master branch)
+endif
 	echo $$GITHUB_PAT | docker login ghcr.io --username $$GITHUB_USERNAME --password-stdin
 	VERSION=$(VERSION) $(COMPOSE_PUBLISH) build
 	VERSION=$(VERSION) $(COMPOSE_PUBLISH) push difficalcy-performanceplus
