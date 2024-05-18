@@ -16,3 +16,11 @@ jobs:
         with:
           submodules: true
       - run: make test-e2e
+
+  check-api-reference:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - run: make check-api-reference
