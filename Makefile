@@ -29,8 +29,11 @@ start-dev: build-dev	## Starts development environment
 clean-dev:	## Cleans development environment
 	$(COMPOSE_APP_DEV) down --remove-orphans
 
-update-openapi-schemas:	## Updates OpenAPI schemas in docs site
-	curl localhost:5004/swagger/v1/swagger.json -o docs/docs/difficalcy-performanceplus.json
+update-api-reference:	## Updates OpenAPI schemas in docs site
+	$(COMPOSE_TOOLING_RUN) scripts/update-api-reference.sh
+
+check-api-reference: ## Checks OpenAPI schemas are updated
+	$(COMPOSE_TOOLING_RUN) scripts/check-api-reference.sh
 
 build-docs:	## Builds documentation site
 	$(COMPOSE_RUN_DOCS) build --strict --clean
@@ -46,6 +49,9 @@ ifndef GITHUB_PAT
 endif
 ifndef GITHUB_USERNAME
 	$(error GITHUB_USERNAME env var is not set)
+endif
+ifneq "$(shell git branch --show-current)" "master"
+	$(error This command can only be run on the master branch)
 endif
 	echo $$GITHUB_PAT | docker login ghcr.io --username $$GITHUB_USERNAME --password-stdin
 	VERSION=$(VERSION) $(COMPOSE_PUBLISH) build

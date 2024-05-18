@@ -3,3 +3,5 @@ services:
     build:
       context: .
       dockerfile: ./tooling.Dockerfile
+    volumes:
+      - .:/app
