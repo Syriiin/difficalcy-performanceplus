@@ -52,10 +52,10 @@ namespace Difficalcy.PerformancePlus.Services
             await beatmapProvider.EnsureBeatmap(beatmapId);
         }
 
-        protected override (object, string) CalculateDifficultyAttributes(OsuScore score)
+        protected override (object, string) CalculateDifficultyAttributes(string beatmapId, int bitMods)
         {
-            var workingBeatmap = GetWorkingBeatmap(score.BeatmapId);
-            var mods = OsuRuleset.ConvertFromLegacyMods((LegacyMods)score.Mods).ToArray();
+            var workingBeatmap = GetWorkingBeatmap(beatmapId);
+            var mods = OsuRuleset.ConvertFromLegacyMods((LegacyMods)bitMods).ToArray();
 
             var difficultyCalculator = OsuRuleset.CreateDifficultyCalculator(workingBeatmap);
             var difficultyAttributes = difficultyCalculator.Calculate(mods) as OsuDifficultyAttributes;
