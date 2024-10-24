@@ -29,6 +29,9 @@ start-dev: build-dev	## Starts development environment
 clean-dev:	## Cleans development environment
 	$(COMPOSE_APP_DEV) down --remove-orphans
 
+reset-dev:	## Resets development environment
+	$(COMPOSE_APP_DEV) down --remove-orphans --volumes
+
 update-api-reference:	## Updates OpenAPI schemas in docs site
 	$(COMPOSE_TOOLING_RUN) scripts/update-api-reference.sh
 
