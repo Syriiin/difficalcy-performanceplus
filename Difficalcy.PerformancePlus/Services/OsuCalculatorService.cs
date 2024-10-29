@@ -35,7 +35,7 @@ namespace Difficalcy.PerformancePlus.Services
         {
             get
             {
-                var packageName = "https://github.com/Syriiin/osu";
+                var packageName = "https://github.com/Syriiin/osu/tree/performanceplus";
                 return new CalculatorInfo
                 {
                     RulesetName = OsuRuleset.Description,
