@@ -56,6 +56,9 @@ endif
 ifneq "$(shell git branch --show-current)" "master"
 	$(error This command can only be run on the master branch)
 endif
+ifneq "$(shell git diff --name-only master)" ""
+	$(error There are uncommitted changes in the working directory)
+endif
 	echo $$GITHUB_PAT | docker login ghcr.io --username $$GITHUB_USERNAME --password-stdin
 	VERSION=$(VERSION) $(COMPOSE_PUBLISH) build
 	VERSION=$(VERSION) $(COMPOSE_PUBLISH) push difficalcy-performanceplus
