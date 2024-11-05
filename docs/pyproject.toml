@@ -7,7 +7,7 @@ package-mode = false
 [tool.poetry.dependencies]
 python = "^3.12"
 mkdocs = "^1.6.1"
-mkdocs-material = "^9.5.43"
+mkdocs-material = "^9.5.44"
 neoteroi-mkdocs = "^1.1.0"
 
 
