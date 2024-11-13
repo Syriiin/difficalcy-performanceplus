@@ -41,6 +41,12 @@ check-api-reference: ## Checks OpenAPI schemas are updated
 build-docs:	## Builds documentation site
 	$(COMPOSE_RUN_DOCS) build --strict --clean
 
+check-formatting:	## Checks code formatting
+	$(COMPOSE_TOOLING_RUN) dotnet tool run dotnet-csharpier Difficalcy.PerformancePlus/ Difficalcy.PerformancePlus.Tests --check
+
+fix-formatting:	## Fix code formatting
+	$(COMPOSE_TOOLING_RUN) dotnet tool run dotnet-csharpier Difficalcy.PerformancePlus/ Difficalcy.PerformancePlus.Tests
+
 # TODO: move gh into tooling container (requires env var considerations)
 VERSION =
 release:	## Pushes docker images to ghcr.io and create a github release
