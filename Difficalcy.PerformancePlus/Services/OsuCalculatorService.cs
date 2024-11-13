@@ -8,11 +8,13 @@ using Difficalcy.PerformancePlus.Models;
 using Difficalcy.Services;
 using Microsoft.Extensions.Configuration;
 using osu.Game.Beatmaps.Legacy;
+using osu.Game.Online.API;
 using osu.Game.Rulesets.Osu;
 using osu.Game.Rulesets.Osu.Difficulty;
 using osu.Game.Rulesets.Osu.Objects;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Scoring;
+using LazerMod = osu.Game.Rulesets.Mods.Mod;
 
 namespace Difficalcy.PerformancePlus.Services
 {
@@ -52,13 +54,13 @@ namespace Difficalcy.PerformancePlus.Services
             await beatmapProvider.EnsureBeatmap(beatmapId);
         }
 
-        protected override (object, string) CalculateDifficultyAttributes(string beatmapId, int bitMods)
+        protected override (object, string) CalculateDifficultyAttributes(string beatmapId, Mod[] mods)
         {
             var workingBeatmap = GetWorkingBeatmap(beatmapId);
-            var mods = OsuRuleset.ConvertFromLegacyMods((LegacyMods)bitMods).ToArray();
+            var lazerMods = mods.Select(ModToLazerMod).ToArray();
 
             var difficultyCalculator = OsuRuleset.CreateDifficultyCalculator(workingBeatmap);
-            var difficultyAttributes = difficultyCalculator.Calculate(mods) as OsuDifficultyAttributes;
+            var difficultyAttributes = difficultyCalculator.Calculate(lazerMods) as OsuDifficultyAttributes;
 
             // Serialising anonymous object with same names because Mods and Skills can't be serialised
             return (difficultyAttributes, JsonSerializer.Serialize(new
@@ -89,7 +91,7 @@ namespace Difficalcy.PerformancePlus.Services
             var osuDifficultyAttributes = (OsuDifficultyAttributes)difficultyAttributes;
 
             var workingBeatmap = GetWorkingBeatmap(score.BeatmapId);
-            var mods = OsuRuleset.ConvertFromLegacyMods((LegacyMods)score.Mods).ToArray();
+            var mods = score.Mods.Select(ModToLazerMod).ToArray();
             var beatmap = workingBeatmap.GetPlayableBeatmap(OsuRuleset.RulesetInfo, mods);
 
             var combo = score.Combo ?? beatmap.HitObjects.Count + beatmap.HitObjects.OfType<Slider>().Sum(s => s.NestedHitObjects.Count - 1);
@@ -120,6 +122,15 @@ namespace Difficalcy.PerformancePlus.Services
         {
             using var beatmapStream = beatmapProvider.GetBeatmapStream(beatmapId);
             return new CalculatorWorkingBeatmap(OsuRuleset, beatmapStream);
+        }
+
+        private LazerMod ModToLazerMod(Mod mod)
+        {
+            var apiMod = new APIMod { Acronym = mod.Acronym };
+            foreach (var setting in mod.Settings)
+                apiMod.Settings.Add(setting.Key, setting.Value);
+
+            return apiMod.ToMod(OsuRuleset);
         }
 
         private static Dictionary<HitResult, int> GetHitResults(int hitResultCount, int countMiss, int countMeh, int countOk)
