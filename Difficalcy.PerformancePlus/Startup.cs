@@ -7,13 +7,15 @@ namespace Difficalcy.PerformancePlus
 {
     public class Startup : DifficalcyStartup
     {
-        public Startup(IConfiguration configuration) : base(configuration) { }
+        public Startup(IConfiguration configuration)
+            : base(configuration) { }
 
         public override string OpenApiTitle => "Difficalcy.PerformancePlus";
 
         public override string OpenApiVersion => "v1";
 
-        protected override string TestBeatmapAssembly => Assembly.GetExecutingAssembly().GetName().Name;
+        protected override string TestBeatmapAssembly =>
+            Assembly.GetExecutingAssembly().GetName().Name;
 
         public override void ConfigureCalculatorServices(IServiceCollection services)
         {
