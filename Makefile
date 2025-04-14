@@ -53,8 +53,8 @@ release:	## Pushes docker images to ghcr.io and create a github release
 ifndef VERSION
 	$(error VERSION is undefined)
 endif
-ifndef GITHUB_PAT
-	$(error GITHUB_PAT env var is not set)
+ifndef GITHUB_TOKEN
+	$(error GITHUB_TOKEN env var is not set)
 endif
 ifndef GITHUB_USERNAME
 	$(error GITHUB_USERNAME env var is not set)
@@ -65,7 +65,7 @@ endif
 ifneq "$(shell git diff --name-only master)" ""
 	$(error There are uncommitted changes in the working directory)
 endif
-	echo $$GITHUB_PAT | docker login ghcr.io --username $$GITHUB_USERNAME --password-stdin
+	echo $$GITHUB_TOKEN | docker login ghcr.io --username $$GITHUB_USERNAME --password-stdin
 	VERSION=$(VERSION) $(COMPOSE_PUBLISH) build
 	VERSION=$(VERSION) $(COMPOSE_PUBLISH) push difficalcy-performanceplus
 	VERSION=latest $(COMPOSE_PUBLISH) build

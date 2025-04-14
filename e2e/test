@@ -3,3 +3,4 @@ set -euxo pipefail
 
 curl --fail --silent --show-error "http://$DIFFICALCY_PERFORMANCEPLUS_HOST/api/info" | jq
 curl --fail --silent --show-error "http://$DIFFICALCY_PERFORMANCEPLUS_HOST/api/calculation?BeatmapId=diffcalc-test" | jq
+curl --fail --silent --show-error "http://$DIFFICALCY_PERFORMANCEPLUS_HOST/api/beatmapdetails?BeatmapId=diffcalc-test" | jq

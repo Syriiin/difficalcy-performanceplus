@@ -8,7 +8,13 @@ using Microsoft.Extensions.Configuration;
 namespace Difficalcy.PerformancePlus.Tests;
 
 public class OsuCalculatorServiceTest
-    : CalculatorServiceTest<OsuScore, OsuDifficulty, OsuPerformance, OsuCalculation>
+    : CalculatorServiceTest<
+        OsuScore,
+        OsuDifficulty,
+        OsuPerformance,
+        OsuCalculation,
+        OsuBeatmapDetails
+    >
 {
     public OsuCalculatorServiceTest()
     {
@@ -28,7 +34,8 @@ public class OsuCalculatorServiceTest
         OsuScore,
         OsuDifficulty,
         OsuPerformance,
-        OsuCalculation
+        OsuCalculation,
+        OsuBeatmapDetails
     > CalculatorService { get; }
 
     [Theory]
@@ -69,5 +76,31 @@ public class OsuCalculatorServiceTest
             Oks = 3,
         };
         TestGetCalculationReturnsCorrectValues(11.098551152482028d, 1082.5784934845988d, score);
+    }
+
+    [Fact]
+    public async Task TestGetBeatmapDetails()
+    {
+        var beatmapId = "diffcalc-test";
+        var beatmapDetails = await CalculatorService.GetBeatmapDetails(beatmapId);
+        Assert.Equal("Unknown", beatmapDetails.Artist);
+        Assert.Equal("Unknown", beatmapDetails.Title);
+        Assert.Equal("Normal", beatmapDetails.DifficultyName);
+        Assert.Equal("Unknown Creator", beatmapDetails.Author);
+        Assert.Equal(239, beatmapDetails.MaxCombo);
+        Assert.Equal(102500, beatmapDetails.Length);
+        Assert.Equal(120, beatmapDetails.MinBPM);
+        Assert.Equal(120, beatmapDetails.MaxBPM);
+        Assert.Equal(120, beatmapDetails.CommonBPM);
+        Assert.Equal(79, beatmapDetails.CircleCount);
+        Assert.Equal(33, beatmapDetails.SliderCount);
+        Assert.Equal(12, beatmapDetails.SpinnerCount);
+        Assert.Equal(82, beatmapDetails.SliderTickCount);
+        Assert.Equal(4, beatmapDetails.CircleSize);
+        Assert.Equal(8.3, beatmapDetails.ApproachRate, 4);
+        Assert.Equal(7, beatmapDetails.Accuracy);
+        Assert.Equal(5, beatmapDetails.DrainRate);
+        Assert.Equal(1.6, beatmapDetails.BaseVelocity, 4);
+        Assert.Equal(1, beatmapDetails.TickRate);
     }
 }
