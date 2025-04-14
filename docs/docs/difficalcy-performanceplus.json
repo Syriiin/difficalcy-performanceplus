@@ -24,6 +24,34 @@
         }
       }
     },
+    "/api/beatmapdetails": {
+      "get": {
+        "tags": [
+          "OsuCalculator"
+        ],
+        "parameters": [
+          {
+            "name": "beatmapId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OsuBeatmapDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/calculation": {
       "get": {
         "tags": [
@@ -183,6 +211,88 @@
               "nullable": true
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OsuBeatmapDetails": {
+        "type": "object",
+        "properties": {
+          "artist": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "difficultyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "author": {
+            "type": "string",
+            "nullable": true
+          },
+          "maxCombo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "length": {
+            "type": "number",
+            "format": "double"
+          },
+          "minBPM": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxBPM": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "commonBPM": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "baseVelocity": {
+            "type": "number",
+            "format": "double"
+          },
+          "tickRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "circleCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sliderCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "spinnerCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sliderTickCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "circleSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "approachRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "accuracy": {
+            "type": "number",
+            "format": "double"
+          },
+          "drainRate": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
