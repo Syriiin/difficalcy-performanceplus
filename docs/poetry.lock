@@ -555,13 +555,13 @@ files = [
 
 [[package]]
 name = "neoteroi-mkdocs"
-version = "1.1.0"
+version = "1.1.1"
 description = "Plugins for MkDocs and Python Markdown"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "neoteroi_mkdocs-1.1.0-py3-none-any.whl", hash = "sha256:9c59aebf83ca09d1d486bf8c0351e6ddfa912f09413d153ecabc5cd268a3155a"},
-    {file = "neoteroi_mkdocs-1.1.0.tar.gz", hash = "sha256:609aae655e781c7aec517ab14759c34ce896b8132d1df4b9c2e504779c2e48ef"},
+    {file = "neoteroi_mkdocs-1.1.1-py3-none-any.whl", hash = "sha256:5f7053b69e1d3be1cc9338a6bef17150d1a755a22d7dec3f927652d11fe491b7"},
+    {file = "neoteroi_mkdocs-1.1.1.tar.gz", hash = "sha256:5015640fd8a435626e537107811eccbeb6e4b31d200c8e812ec3143e03447dac"},
 ]
 
 [package.dependencies]
