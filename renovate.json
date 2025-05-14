@@ -4,6 +4,19 @@
     "config:recommended",
     "schedule:weekly"
   ],
+  "rebaseWhen": "behind-base-branch",
+  "packageRules": [
+    {
+      "matchManagers": [
+        "nuget"
+      ],
+      "matchPackageNames": [
+        "xunit*",
+        "Microsoft.Net.Test.Sdk"
+      ],
+      "groupName": "test-tools"
+    }
+  ],
   "git-submodules": {
     "enabled": true
   }
