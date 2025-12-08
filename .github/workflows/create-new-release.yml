@@ -15,7 +15,7 @@ jobs:
       packages: write
       contents: write
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           submodules: true
       - run: make release VERSION=${{ github.event.inputs.version }} GITHUB_USERNAME=${{ github.actor }}
