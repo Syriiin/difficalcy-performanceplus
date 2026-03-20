@@ -439,5 +439,10 @@
         "additionalProperties": false
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "OsuCalculator"
+    }
+  ]
 }
