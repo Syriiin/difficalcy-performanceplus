@@ -6,7 +6,14 @@ services:
     depends_on:
       - difficalcy-performanceplus
 
+  beatmap-server:
+    image: caddy:2-alpine
+    volumes:
+      - ./e2e/beatmaps:/usr/share/caddy:ro
+
   difficalcy-performanceplus:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - USE_TEST_BEATMAP_PROVIDER=true
+      - BEATMAP_DOWNLOAD_URL=http://beatmap-server:80/{beatmapId}.osu
+    depends_on:
+      - beatmap-server
