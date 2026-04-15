@@ -3,4 +3,8 @@ set -euxo pipefail
 
 curl --fail --silent --show-error "http://$DIFFICALCY_PERFORMANCEPLUS_HOST/api/info" | jq
 curl --fail --silent --show-error "http://$DIFFICALCY_PERFORMANCEPLUS_HOST/api/calculation?BeatmapId=diffcalc-test" | jq
+curl --fail --silent --show-error "http://$DIFFICALCY_PERFORMANCEPLUS_HOST/api/calculation?BeatmapId=diffcalc-test" | jq # Run the calculation twice to test caching
+curl --fail --silent --show-error -X POST "http://$DIFFICALCY_PERFORMANCEPLUS_HOST/api/batch/calculation" \
+  -H "Content-Type: application/json" \
+  -d '[{"BeatmapId": "diffcalc-test"}, {"BeatmapId": "diffcalc-test", "Mods": [{"Acronym": "DT"}]}]' | jq
 curl --fail --silent --show-error "http://$DIFFICALCY_PERFORMANCEPLUS_HOST/api/beatmapdetails?BeatmapId=diffcalc-test" | jq
