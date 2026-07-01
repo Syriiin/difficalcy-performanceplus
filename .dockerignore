@@ -21,6 +21,6 @@
 **/npm-debug.log
 **/obj
 **/secrets.dev.yaml
-**/tools
+**/tools/StripResources/{bin,obj}
 **/values.dev.yaml
 README.md

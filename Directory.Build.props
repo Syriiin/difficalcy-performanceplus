@@ -1,0 +1,11 @@
+<Project>
+  <Target
+    Name="RemoveSatelliteAssemblies"
+    AfterTargets="_ComputeIlcCompileInputs"
+    BeforeTargets="WriteIlcRspFileForCompilation"
+  >
+    <ItemGroup>
+      <IlcSatelliteAssembly Remove="@(IlcSatelliteAssembly)" />
+    </ItemGroup>
+  </Target>
+</Project>

@@ -1,10 +1,21 @@
 #!/bin/bash
 set -euxo pipefail
 
-curl --fail --silent --show-error "http://$DIFFICALCY_PERFORMANCEPLUS_HOST/api/info" | jq
-curl --fail --silent --show-error "http://$DIFFICALCY_PERFORMANCEPLUS_HOST/api/calculation?BeatmapId=diffcalc-test" | jq
-curl --fail --silent --show-error "http://$DIFFICALCY_PERFORMANCEPLUS_HOST/api/calculation?BeatmapId=diffcalc-test" | jq # Run the calculation twice to test caching
-curl --fail --silent --show-error -X POST "http://$DIFFICALCY_PERFORMANCEPLUS_HOST/api/batch/calculation" \
-  -H "Content-Type: application/json" \
-  -d '[{"BeatmapId": "diffcalc-test"}, {"BeatmapId": "diffcalc-test", "Mods": [{"Acronym": "DT"}]}]' | jq
-curl --fail --silent --show-error "http://$DIFFICALCY_PERFORMANCEPLUS_HOST/api/beatmapdetails?BeatmapId=diffcalc-test" | jq
+hosts=("$DIFFICALCY_HOST" "${DIFFICALCY_SLIM_HOST:-}")
+
+for host in "${hosts[@]}"; do
+  [ -z "$host" ] && continue
+  echo "=== Testing $host ==="
+  API="http://$host/api/calculators"
+
+  curl --fail --silent --show-error "$API" | jq
+
+  curl --fail --silent --show-error "$API/osu/info" | jq
+  curl --fail --silent --show-error "$API/osu/calculation?BeatmapId=diffcalc-test" | jq
+  curl --fail --silent --show-error "$API/osu/calculation?BeatmapId=diffcalc-test" | jq
+  curl --fail --silent --show-error "$API/osu/calculation?BeatmapId=diffcalc-test&Mods=HD,DT" | jq
+  curl --fail --silent --show-error -X POST "$API/osu/batch/calculation" \
+    -H "Content-Type: application/json" \
+    -d '[{"BeatmapId": "diffcalc-test"}, {"BeatmapId": "diffcalc-test", "Mods": [{"Acronym": "DT"}]}]' | jq
+  curl --fail --silent --show-error "$API/osu/beatmapdetails?BeatmapId=diffcalc-test" | jq
+done
