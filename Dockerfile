@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/runtime-deps:10.0-noble-chiseled AS base
 
-LABEL org.opencontainers.image.source https://github.com/Syriiin/difficalcy-performanceplus
+LABEL org.opencontainers.image.source=https://github.com/Syriiin/difficalcy-performanceplus
 
 WORKDIR /app
 EXPOSE 80
@@ -56,7 +56,7 @@ RUN dotnet publish ./Difficalcy.PerformancePlus.Api/Difficalcy.PerformancePlus.A
 # -----------------------------------------------------------------------------
 
 FROM base AS publish
-LABEL org.opencontainers.image.description "Lazer powered osu! PP+ difficulty calculator API"
+LABEL org.opencontainers.image.description="Lazer powered osu! PP+ difficulty calculator API"
 COPY --from=build --chown=app:app /beatmaps /beatmaps
 COPY --from=build /app/difficalcy-performanceplus .
 ENTRYPOINT ["./Difficalcy.PerformancePlus.Api"]
@@ -79,7 +79,7 @@ RUN dotnet build ./tools/StripResources/StripResources.csproj -o /tools && \
 # -----------------------------------------------------------------------------
 
 FROM base AS publish-slim
-LABEL org.opencontainers.image.description "Lazer powered osu! PP+ difficulty calculator API (slim)"
+LABEL org.opencontainers.image.description="Lazer powered osu! PP+ difficulty calculator API (slim)"
 COPY --from=build-slim --chown=app:app /beatmaps /beatmaps
 COPY --from=build-slim /app/difficalcy-performanceplus .
 ENTRYPOINT ["./Difficalcy.PerformancePlus.Api"]
