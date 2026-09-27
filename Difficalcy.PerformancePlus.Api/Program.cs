@@ -43,14 +43,14 @@ var handlers = new DifficalcyHandlers<
 
 var api = app.MapGroup("/api");
 
-api.MapGet("/calculators", () =>
-{
-    var osu = app.Services.GetRequiredService<OsuCalculatorService>();
-    return new Dictionary<string, CalculatorInfo>
+api.MapGet(
+    "/calculators",
+    () =>
     {
-        ["osu"] = osu.Info,
-    };
-});
+        var osu = app.Services.GetRequiredService<OsuCalculatorService>();
+        return new Dictionary<string, CalculatorInfo> { ["osu"] = osu.Info };
+    }
+);
 
 var osu = api.MapGroup("/calculators/osu").WithTags("osu");
 osu.MapGet("/info", handlers.GetInfo);
