@@ -30,7 +30,7 @@
     "/api/calculators/osu/info": {
       "get": {
         "tags": [
-          "DifficalcyHandlers`5"
+          "osu"
         ],
         "responses": {
           "200": {
@@ -49,7 +49,7 @@
     "/api/calculators/osu/calculation": {
       "get": {
         "tags": [
-          "DifficalcyHandlers`5"
+          "osu"
         ],
         "parameters": [
           {
@@ -96,7 +96,7 @@
     "/api/calculators/osu/batch/calculation": {
       "post": {
         "tags": [
-          "DifficalcyHandlers`5"
+          "osu"
         ],
         "requestBody": {
           "content": {
@@ -141,7 +141,7 @@
     "/api/calculators/osu/beatmapdetails": {
       "get": {
         "tags": [
-          "DifficalcyHandlers`5"
+          "osu"
         ],
         "parameters": [
           {
@@ -791,7 +791,7 @@
       "name": "Difficalcy.PerformancePlus.Api"
     },
     {
-      "name": "DifficalcyHandlers`5"
+      "name": "osu"
     }
   ]
 }

@@ -4,6 +4,7 @@ using Difficalcy.Models;
 using Difficalcy.PerformancePlus.Models;
 using Difficalcy.PerformancePlus.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -51,7 +52,7 @@ api.MapGet("/calculators", () =>
     };
 });
 
-var osu = api.MapGroup("/calculators/osu");
+var osu = api.MapGroup("/calculators/osu").WithTags("osu");
 osu.MapGet("/info", handlers.GetInfo);
 osu.MapGet("/calculation", handlers.GetCalculation);
 osu.MapPost("/batch/calculation", handlers.GetCalculationBatch);
