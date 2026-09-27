@@ -13,6 +13,12 @@ builder.AddDifficalcyServices("Difficalcy.PerformancePlus", "v1");
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
+    options.SerializerOptions.NumberHandling = System
+        .Text
+        .Json
+        .Serialization
+        .JsonNumberHandling
+        .AllowNamedFloatingPointLiterals;
     options.SerializerOptions.TypeInfoResolverChain.Add(DifficalcyJsonContext.Default);
     options.SerializerOptions.TypeInfoResolverChain.Add(OsuJsonContext.Default);
 });

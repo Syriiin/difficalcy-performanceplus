@@ -51,4 +51,7 @@ Get your lazer powered calculations:
 }
 ```
 
+!!! tip "Non-finite values"
+    Sometimes, due to broken maps or bugs, the calculator can return non-finite values. These are serialised as `"NaN"`, `"Infinity"` or `"-Infinity"` strings.
+
 See [the difficalcy Getting Started page](https://difficalcy.syrin.me/getting-started) for a full example setup.
