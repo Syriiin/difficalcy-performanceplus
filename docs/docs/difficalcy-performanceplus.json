@@ -1,14 +1,36 @@
 {
-  "openapi": "3.0.4",
+  "openapi": "3.1.1",
   "info": {
     "title": "Difficalcy.PerformancePlus",
     "version": "v1"
   },
   "paths": {
-    "/api/info": {
+    "/api/calculators": {
       "get": {
         "tags": [
-          "OsuCalculator"
+          "Difficalcy.PerformancePlus.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/CalculatorInfo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/calculators/osu/info": {
+      "get": {
+        "tags": [
+          "DifficalcyHandlers`5"
         ],
         "responses": {
           "200": {
@@ -24,15 +46,108 @@
         }
       }
     },
-    "/api/beatmapdetails": {
+    "/api/calculators/osu/calculation": {
       "get": {
         "tags": [
-          "OsuCalculator"
+          "DifficalcyHandlers`5"
         ],
         "parameters": [
           {
             "name": "beatmapId",
             "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mods",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OsuCalculation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/calculators/osu/batch/calculation": {
+      "post": {
+        "tags": [
+          "DifficalcyHandlers`5"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OsuScore"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OsuCalculation"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/calculators/osu/beatmapdetails": {
+      "get": {
+        "tags": [
+          "DifficalcyHandlers`5"
+        ],
+        "parameters": [
+          {
+            "name": "beatmapId",
+            "in": "query",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -48,116 +163,13 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/api/calculation": {
-      "get": {
-        "tags": [
-          "OsuCalculator"
-        ],
-        "parameters": [
-          {
-            "name": "Combo",
-            "in": "query",
-            "schema": {
-              "maximum": 2147483647,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32"
-            }
           },
-          {
-            "name": "Misses",
-            "in": "query",
-            "schema": {
-              "maximum": 2147483647,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Mehs",
-            "in": "query",
-            "schema": {
-              "maximum": 2147483647,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Oks",
-            "in": "query",
-            "schema": {
-              "maximum": 2147483647,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "BeatmapId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Mods",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/Mod"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
+          "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OsuCalculation"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/batch/calculation": {
-      "post": {
-        "tags": [
-          "OsuCalculator"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/OsuScore"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OsuCalculation"
-                  }
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -172,27 +184,50 @@
         "type": "object",
         "properties": {
           "rulesetName": {
-            "type": "string",
-            "nullable": true
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "calculatorName": {
-            "type": "string",
-            "nullable": true
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "calculatorPackage": {
-            "type": "string",
-            "nullable": true
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "calculatorVersion": {
-            "type": "string",
-            "nullable": true
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "calculatorUrl": {
-            "type": "string",
-            "nullable": true
+            "type": [
+              "null",
+              "string"
+            ]
           }
-        },
-        "additionalProperties": false
+        }
+      },
+      "ErrorResponse": {
+        "required": [
+          "error"
+        ],
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
       },
       "Mod": {
         "required": [
@@ -201,67 +236,25 @@
         "type": "object",
         "properties": {
           "acronym": {
-            "minLength": 1,
-            "type": "string"
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "settings": {
-            "type": "object",
+            "type": [
+              "null",
+              "object"
+            ],
             "additionalProperties": {
-              "type": "string",
-              "nullable": true
-            },
-            "nullable": true
+              "type": "string"
+            }
           }
-        },
-        "additionalProperties": false
+        }
       },
       "OsuBeatmapDetails": {
         "type": "object",
         "properties": {
-          "artist": {
-            "type": "string",
-            "nullable": true
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "difficultyName": {
-            "type": "string",
-            "nullable": true
-          },
-          "author": {
-            "type": "string",
-            "nullable": true
-          },
-          "maxCombo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "length": {
-            "type": "number",
-            "format": "double"
-          },
-          "minBPM": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "maxBPM": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "commonBPM": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "baseVelocity": {
-            "type": "number",
-            "format": "double"
-          },
-          "tickRate": {
-            "type": "number",
-            "format": "double"
-          },
           "circleCount": {
             "type": "integer",
             "format": "int32"
@@ -279,119 +272,467 @@
             "format": "int32"
           },
           "circleSize": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           },
           "approachRate": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           },
           "accuracy": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           },
           "drainRate": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
+            "format": "double"
+          },
+          "artist": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "title": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "difficultyName": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "author": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "maxCombo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "length": {
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
+            "format": "double"
+          },
+          "minBPM": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxBPM": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "commonBPM": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "baseVelocity": {
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
+            "format": "double"
+          },
+          "tickRate": {
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           }
-        },
-        "additionalProperties": false
+        }
       },
       "OsuCalculation": {
         "type": "object",
         "properties": {
+          "accuracy": {
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
+            "format": "double"
+          },
+          "combo": {
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
+            "format": "double"
+          },
           "difficulty": {
             "$ref": "#/components/schemas/OsuDifficulty"
           },
           "performance": {
             "$ref": "#/components/schemas/OsuPerformance"
-          },
-          "accuracy": {
-            "type": "number",
-            "format": "double"
-          },
-          "combo": {
-            "type": "number",
-            "format": "double"
           }
-        },
-        "additionalProperties": false
+        }
       },
       "OsuDifficulty": {
         "type": "object",
         "properties": {
-          "total": {
-            "type": "number",
-            "format": "double"
-          },
           "aim": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           },
           "jumpAim": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           },
           "flowAim": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           },
           "precision": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           },
           "speed": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           },
           "stamina": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           },
           "accuracy": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
+            "format": "double"
+          },
+          "total": {
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           }
-        },
-        "additionalProperties": false
+        }
       },
       "OsuPerformance": {
         "type": "object",
         "properties": {
-          "total": {
-            "type": "number",
-            "format": "double"
-          },
           "aim": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           },
           "jumpAim": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           },
           "flowAim": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           },
           "precision": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           },
           "speed": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           },
           "stamina": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           },
           "accuracy": {
-            "type": "number",
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
+            "format": "double"
+          },
+          "total": {
+            "type": "object",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "enum": [
+                  "NaN",
+                  "Infinity",
+                  "-Infinity"
+                ]
+              }
+            ],
             "format": "double"
           }
-        },
-        "additionalProperties": false
+        }
       },
       "OsuScore": {
         "required": [
@@ -399,23 +740,14 @@
         ],
         "type": "object",
         "properties": {
-          "beatmapId": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "mods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Mod"
-            },
-            "nullable": true
-          },
           "combo": {
             "maximum": 2147483647,
             "minimum": 0,
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "type": [
+              "null",
+              "integer"
+            ],
+            "format": "int32"
           },
           "misses": {
             "maximum": 2147483647,
@@ -434,15 +766,32 @@
             "minimum": 0,
             "type": "integer",
             "format": "int32"
+          },
+          "beatmapId": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "mods": {
+            "type": [
+              "null",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Mod"
+            }
           }
-        },
-        "additionalProperties": false
+        }
       }
     }
   },
   "tags": [
     {
-      "name": "OsuCalculator"
+      "name": "Difficalcy.PerformancePlus.Api"
+    },
+    {
+      "name": "DifficalcyHandlers`5"
     }
   ]
 }

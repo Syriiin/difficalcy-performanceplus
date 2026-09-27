@@ -12,6 +12,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           submodules: true
+      - uses: cachix/install-nix-action@v31
       - run: make test
 
   e2e-test:
@@ -28,6 +29,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           submodules: true
+      - uses: cachix/install-nix-action@v31
       - run: make check-api-reference
 
   check-docs-build:
@@ -42,4 +44,5 @@ jobs:
       - uses: actions/checkout@v6
         with:
           submodules: true
+      - uses: cachix/install-nix-action@v31
       - run: make check-formatting
