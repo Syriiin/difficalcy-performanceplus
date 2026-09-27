@@ -2,7 +2,7 @@ services:
   difficalcy-performanceplus:
     build:
       context: .
-      target: difficalcy-performanceplus
+      target: publish
       args:
         - OSU_COMMIT_HASH
     environment:

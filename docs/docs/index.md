@@ -51,4 +51,18 @@ Get your lazer powered calculations:
 }
 ```
 
+!!! tip "Non-finite values"
+    Sometimes, due to broken maps or bugs, the calculator can return non-finite values. These are serialised as `"NaN"`, `"Infinity"` or `"-Infinity"` strings.
+
+## Image variants
+
+difficalcy-performanceplus is published in two variants with the same API:
+
+| Variant | Tags                                                      | Description                                                                                                                 |
+| ------- | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Slim    | `latest`, `vX.Y.Z` (`latest-slim`, `vX.Y.Z-slim` aliases) | Default lightweight image. Unnecessary game resources and dependencies are stripped.                                         |
+| Full    | `latest-full`, `vX.Y.Z-full`                              | Complete unstripped image (5-6x larger). Use this if you run into issues with the slim image, and please submit a bug report! |
+
+Both variants are tested with the same end-to-end suite, so calculation results are equivalent.
+
 See [the difficalcy Getting Started page](https://difficalcy.syrin.me/getting-started) for a full example setup.

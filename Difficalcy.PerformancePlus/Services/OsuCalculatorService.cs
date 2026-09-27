@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace Difficalcy.PerformancePlus.Services
             : base(cache)
         {
             this.beatmapProvider = beatmapProvider;
-            osuCommitHash = configuration["OSU_COMMIT_HASH"];
+            osuCommitHash = configuration["OSU_COMMIT_HASH"] ?? "";
             if (osuCommitHash.Length == 0)
                 throw new ArgumentException("OSU_COMMIT_HASH must be provided in configuration");
         }
@@ -78,35 +79,34 @@ namespace Difficalcy.PerformancePlus.Services
             var difficultyAttributes =
                 difficultyCalculator.Calculate(lazerMods) as OsuDifficultyAttributes;
 
-            // Serialising anonymous object with same names because Mods and Skills can't be serialised
+            var dto = new OsuDifficultyAttributesDto
+            {
+                StarRating = difficultyAttributes.StarRating,
+                MaxCombo = difficultyAttributes.MaxCombo,
+                AimDifficulty = difficultyAttributes.AimDifficulty,
+                JumpAimDifficulty = difficultyAttributes.JumpAimDifficulty,
+                FlowAimDifficulty = difficultyAttributes.FlowAimDifficulty,
+                PrecisionDifficulty = difficultyAttributes.PrecisionDifficulty,
+                SpeedDifficulty = difficultyAttributes.SpeedDifficulty,
+                StaminaDifficulty = difficultyAttributes.StaminaDifficulty,
+                AccuracyDifficulty = difficultyAttributes.AccuracyDifficulty,
+                ApproachRate = difficultyAttributes.ApproachRate,
+                OverallDifficulty = difficultyAttributes.OverallDifficulty,
+                HitCircleCount = difficultyAttributes.HitCircleCount,
+                SpinnerCount = difficultyAttributes.SpinnerCount,
+            };
+
             return (
                 difficultyAttributes,
-                JsonSerializer.Serialize(
-                    new
-                    {
-                        difficultyAttributes.StarRating,
-                        difficultyAttributes.MaxCombo,
-                        difficultyAttributes.AimDifficulty,
-                        difficultyAttributes.JumpAimDifficulty,
-                        difficultyAttributes.FlowAimDifficulty,
-                        difficultyAttributes.PrecisionDifficulty,
-                        difficultyAttributes.SpeedDifficulty,
-                        difficultyAttributes.StaminaDifficulty,
-                        difficultyAttributes.AccuracyDifficulty,
-                        difficultyAttributes.ApproachRate,
-                        difficultyAttributes.OverallDifficulty,
-                        difficultyAttributes.HitCircleCount,
-                        difficultyAttributes.SpinnerCount,
-                    }
-                )
+                JsonSerializer.Serialize(dto, OsuJsonContext.Default.OsuDifficultyAttributesDto)
             );
         }
 
         protected override object DeserialiseDifficultyAttributes(string difficultyAttributesJson)
         {
-            return JsonSerializer.Deserialize<OsuDifficultyAttributes>(
+            return JsonSerializer.Deserialize(
                 difficultyAttributesJson,
-                new JsonSerializerOptions() { IncludeFields = true }
+                OsuJsonContext.Default.OsuDifficultyAttributes
             );
         }
 
@@ -186,10 +186,13 @@ namespace Difficalcy.PerformancePlus.Services
             };
         }
 
-        private CalculatorWorkingBeatmap GetWorkingBeatmap(string beatmapId)
+        [DynamicDependency(
+            DynamicallyAccessedMemberTypes.PublicParameterlessConstructor,
+            typeof(OsuRuleset)
+        )]
+        private FlatWorkingBeatmap GetWorkingBeatmap(string beatmapId)
         {
-            using var beatmapStream = beatmapProvider.GetBeatmapStream(beatmapId);
-            return new CalculatorWorkingBeatmap(OsuRuleset, beatmapStream);
+            return new FlatWorkingBeatmap(beatmapProvider.GetBeatmapPath(beatmapId));
         }
 
         private LazerMod ModToLazerMod(Mod mod)

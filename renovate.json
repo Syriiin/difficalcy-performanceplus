@@ -18,5 +18,8 @@
   ],
   "git-submodules": {
     "enabled": true
+  },
+  "nix": {
+    "enabled": true
   }
 }

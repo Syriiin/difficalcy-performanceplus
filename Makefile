@@ -1,24 +1,28 @@
-COMPOSE_TOOLING_RUN = docker compose -f compose.tooling.yaml run --rm --build tooling
-COMPOSE_E2E = docker compose -f compose.yaml -f compose.override.e2e.yaml
+NIX_RUN = nix develop --command
+COMPOSE_E2E = docker compose -f compose.e2e.yaml
 COMPOSE_E2E_RUN = $(COMPOSE_E2E) run --rm --build e2e-test-runner
 COMPOSE_APP_DEV = docker compose -f compose.yaml -f compose.override.yaml
-COMPOSE_RUN_DOCS = docker compose -f compose.yaml -f compose.override.yaml run docs
-COMPOSE_PUBLISH = docker compose -f compose.yaml -f compose.override.publish.yaml
+COMPOSE_RUN_DOCS = docker compose -f compose.yaml -f compose.override.yaml run --rm --build docs
+REPO = ghcr.io/syriiin/difficalcy-performanceplus
 
 export OSU_COMMIT_HASH = $(shell git rev-parse HEAD:osu)
 
 help:	## Show this help
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
-bash:	## Opens bash shell in tooling container
-	$(COMPOSE_TOOLING_RUN) bash
+shell:	## Runs a bash shell with dev tooling
+	nix develop
 
 test:	## Runs test suite
-	$(COMPOSE_TOOLING_RUN) dotnet test
+	$(NIX_RUN) dotnet test
 
-test-e2e:	## Runs E2E test suite
+test-e2e:	## Runs E2E test suite (slim + full)
 	$(COMPOSE_E2E_RUN)
-	$(COMPOSE_E2E) down
+	$(COMPOSE_E2E) down --volumes
+
+update-e2e-snapshot:	## Regenerates the E2E response snapshot
+	UPDATE_SNAPSHOTS=true $(COMPOSE_E2E_RUN)
+	$(COMPOSE_E2E) down --volumes
 
 build-dev:	## Builds development docker images
 	$(COMPOSE_APP_DEV) build
@@ -33,23 +37,27 @@ reset-dev:	## Resets development environment
 	$(COMPOSE_APP_DEV) down --remove-orphans --volumes
 
 update-api-reference:	## Updates OpenAPI schemas in docs site
-	$(COMPOSE_TOOLING_RUN) scripts/update-api-reference.sh
+	$(NIX_RUN) scripts/update-api-reference.sh
 
 check-api-reference: ## Checks OpenAPI schemas are updated
-	$(COMPOSE_TOOLING_RUN) scripts/check-api-reference.sh
+	$(NIX_RUN) scripts/check-api-reference.sh
 
 build-docs:	## Builds documentation site
 	$(COMPOSE_RUN_DOCS) build --strict --clean
 
-check-formatting:	## Checks code formatting
-	$(COMPOSE_TOOLING_RUN) dotnet tool run csharpier check Difficalcy.PerformancePlus Difficalcy.PerformancePlus.Tests
+restore-dotnet-tooling:
+	dotnet tool restore
 
-fix-formatting:	## Fix code formatting
-	$(COMPOSE_TOOLING_RUN) dotnet tool run csharpier format Difficalcy.PerformancePlus Difficalcy.PerformancePlus.Tests
+check-formatting: restore-dotnet-tooling	## Checks code formatting
+	$(NIX_RUN) dotnet tool run csharpier check Difficalcy.PerformancePlus Difficalcy.PerformancePlus.Api Difficalcy.PerformancePlus.Tests
+	$(NIX_RUN) nixfmt --check flake.nix
 
-# TODO: move gh into tooling container (requires env var considerations)
+fix-formatting: restore-dotnet-tooling	## Fix code formatting
+	$(NIX_RUN) dotnet tool run csharpier format Difficalcy.PerformancePlus Difficalcy.PerformancePlus.Api Difficalcy.PerformancePlus.Tests
+	$(NIX_RUN) nixfmt flake.nix
+
 VERSION =
-release:	## Pushes docker images to ghcr.io and create a github release
+release:	## Pushes docker images to ghcr.io and creates a github release
 ifndef VERSION
 	$(error VERSION is undefined)
 endif
@@ -66,8 +74,40 @@ ifneq "$(shell git diff --name-only master)" ""
 	$(error There are uncommitted changes in the working directory)
 endif
 	echo $$GITHUB_TOKEN | docker login ghcr.io --username $$GITHUB_USERNAME --password-stdin
-	VERSION=$(VERSION) $(COMPOSE_PUBLISH) build
-	VERSION=$(VERSION) $(COMPOSE_PUBLISH) push difficalcy-performanceplus
-	VERSION=latest $(COMPOSE_PUBLISH) build
-	VERSION=latest $(COMPOSE_PUBLISH) push difficalcy-performanceplus
-	gh release create "$(VERSION)" --generate-notes
+	docker build --build-arg OSU_COMMIT_HASH . --target publish \
+	    -t $(REPO):$(VERSION) \
+	    -t $(REPO):latest \
+	    -t $(REPO):$(VERSION)-slim \
+	    -t $(REPO):latest-slim
+	docker build --build-arg OSU_COMMIT_HASH . --target publish-full \
+	    -t $(REPO):$(VERSION)-full \
+	    -t $(REPO):latest-full
+	docker push $(REPO):$(VERSION)
+	docker push $(REPO):latest
+	docker push $(REPO):$(VERSION)-slim
+	docker push $(REPO):latest-slim
+	docker push $(REPO):$(VERSION)-full
+	docker push $(REPO):latest-full
+	$(NIX_RUN) gh release create "$(VERSION)" --generate-notes
+
+VERSION =
+pre-release:	## Pushes docker images to ghcr.io and creates a github prerelease
+ifndef VERSION
+	$(error VERSION is undefined)
+endif
+ifndef GITHUB_TOKEN
+	$(error GITHUB_TOKEN env var is not set)
+endif
+ifndef GITHUB_USERNAME
+	$(error GITHUB_USERNAME env var is not set)
+endif
+ifneq "$(shell git diff --name-only HEAD)" ""
+	$(error There are uncommitted changes in the working directory)
+endif
+	echo $$GITHUB_TOKEN | docker login ghcr.io --username $$GITHUB_USERNAME --password-stdin
+	docker build --build-arg OSU_COMMIT_HASH . --target publish -t $(REPO):$(VERSION) -t $(REPO):$(VERSION)-slim
+	docker build --build-arg OSU_COMMIT_HASH . --target publish-full -t $(REPO):$(VERSION)-full
+	docker push $(REPO):$(VERSION)
+	docker push $(REPO):$(VERSION)-slim
+	docker push $(REPO):$(VERSION)-full
+	$(NIX_RUN) gh release create "$(VERSION)" --generate-notes --prerelease --target "$(shell git branch --show-current)"

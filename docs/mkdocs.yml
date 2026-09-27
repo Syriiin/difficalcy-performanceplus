@@ -5,7 +5,7 @@ site_author: Samuel Cattini-Schultz
 repo_url: https://github.com/Syriiin/difficalcy-performanceplus
 repo_name: Syriiin/difficalcy-performanceplus
 copyright: |
-  &copy; 2024 <a href="https://github.com/Syriiin" target="_blank" rel="noopener">Samuel Cattini-Schultz</a>
+  &copy; 2026 <a href="https://github.com/Syriiin" target="_blank" rel="noopener">Samuel Cattini-Schultz</a>
 
 nav:
   - index.md
@@ -39,6 +39,7 @@ theme:
         name: Switch to dark mode
 
 markdown_extensions:
+  - admonition
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.superfences
