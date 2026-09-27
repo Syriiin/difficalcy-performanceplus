@@ -1,0 +1,166 @@
+/api/calculators
+{
+  "osu": {
+    "rulesetName": "osu!",
+    "calculatorName": "PerformancePlus (PP+)",
+    "calculatorPackage": "https://github.com/Syriiin/osu/tree/performanceplus",
+    "calculatorVersion": "faca4a938ce8b71503a5ac9e9ce52e2ae233a2a2",
+    "calculatorUrl": "https://github.com/Syriiin/osu/tree/performanceplus/tree/faca4a938ce8b71503a5ac9e9ce52e2ae233a2a2"
+  }
+}
+/api/calculators/osu/info
+{
+  "rulesetName": "osu!",
+  "calculatorName": "PerformancePlus (PP+)",
+  "calculatorPackage": "https://github.com/Syriiin/osu/tree/performanceplus",
+  "calculatorVersion": "faca4a938ce8b71503a5ac9e9ce52e2ae233a2a2",
+  "calculatorUrl": "https://github.com/Syriiin/osu/tree/performanceplus/tree/faca4a938ce8b71503a5ac9e9ce52e2ae233a2a2"
+}
+/api/calculators/osu/calculation?BeatmapId=diffcalc-test
+{
+  "accuracy": 1,
+  "combo": 239,
+  "difficulty": {
+    "aim": 3.712473361132066,
+    "jumpAim": 3.70904096236947,
+    "flowAim": 0.3151160729715868,
+    "precision": 2.2138517300494462,
+    "speed": 2.637384561234877,
+    "stamina": 2.075778832557065,
+    "accuracy": 1.066472170319773,
+    "total": 6.578701261037768
+  },
+  "performance": {
+    "aim": 191.40342916526987,
+    "jumpAim": 190.87302885778902,
+    "flowAim": 0.11704997974526493,
+    "precision": 40.588711962537566,
+    "speed": 62.784920112851374,
+    "stamina": 30.611048412526692,
+    "accuracy": 22.205031299955266,
+    "total": 288.6125590551904
+  }
+}
+/api/calculators/osu/calculation?BeatmapId=diffcalc-test
+{
+  "accuracy": 1,
+  "combo": 239,
+  "difficulty": {
+    "aim": 3.712473361132066,
+    "jumpAim": 3.70904096236947,
+    "flowAim": 0.3151160729715868,
+    "precision": 2.2138517300494462,
+    "speed": 2.637384561234877,
+    "stamina": 2.075778832557065,
+    "accuracy": 1.066472170319773,
+    "total": 6.578701261037768
+  },
+  "performance": {
+    "aim": 191.40342916526987,
+    "jumpAim": 190.87302885778902,
+    "flowAim": 0.11704997974526493,
+    "precision": 40.588711962537566,
+    "speed": 62.784920112851374,
+    "stamina": 30.611048412526692,
+    "accuracy": 22.205031299955266,
+    "total": 288.6125590551904
+  }
+}
+/api/calculators/osu/calculation?BeatmapId=diffcalc-test&Mods=HD,DT
+{
+  "accuracy": 1,
+  "combo": 239,
+  "difficulty": {
+    "aim": 5.203799961107885,
+    "jumpAim": 4.9526715275776025,
+    "flowAim": 2.4549430327535315,
+    "precision": 2.959961917135791,
+    "speed": 3.5056361491786197,
+    "stamina": 2.7806659522643975,
+    "accuracy": 1.0753585064841014,
+    "total": 9.10035686616146
+  },
+  "performance": {
+    "aim": 541.7393515075554,
+    "jumpAim": 467.0325818767253,
+    "flowAim": 56.87911875349662,
+    "precision": 99.69812101155344,
+    "speed": 160.11139777596335,
+    "stamina": 79.90393932189768,
+    "accuracy": 55.395577887926585,
+    "total": 793.3281780987851
+  }
+}
+-X POST /api/calculators/osu/batch/calculation -H Content-Type: application/json -d [{"BeatmapId": "diffcalc-test"}, {"BeatmapId": "diffcalc-test", "Mods": [{"Acronym": "DT"}]}]
+[
+  {
+    "accuracy": 1,
+    "combo": 239,
+    "difficulty": {
+      "aim": 3.712473361132066,
+      "jumpAim": 3.70904096236947,
+      "flowAim": 0.3151160729715868,
+      "precision": 2.2138517300494462,
+      "speed": 2.637384561234877,
+      "stamina": 2.075778832557065,
+      "accuracy": 1.066472170319773,
+      "total": 6.578701261037768
+    },
+    "performance": {
+      "aim": 191.40342916526987,
+      "jumpAim": 190.87302885778902,
+      "flowAim": 0.11704997974526493,
+      "precision": 40.588711962537566,
+      "speed": 62.784920112851374,
+      "stamina": 30.611048412526692,
+      "accuracy": 22.205031299955266,
+      "total": 288.6125590551904
+    }
+  },
+  {
+    "accuracy": 1,
+    "combo": 239,
+    "difficulty": {
+      "aim": 4.990880886522534,
+      "jumpAim": 4.751045533219606,
+      "flowAim": 2.359100272900049,
+      "precision": 2.838839675282487,
+      "speed": 3.5056361491786197,
+      "stamina": 2.7806659522643975,
+      "accuracy": 1.0753585064841014,
+      "total": 8.818030694786833
+    },
+    "performance": {
+      "aim": 477.92551632001266,
+      "jumpAim": 412.2837151469558,
+      "flowAim": 50.47400954164838,
+      "precision": 87.95311021850264,
+      "speed": 160.11139777596335,
+      "stamina": 79.90393932189768,
+      "accuracy": 54.30939008620253,
+      "total": 722.9095478161727
+    }
+  }
+]
+/api/calculators/osu/beatmapdetails?BeatmapId=diffcalc-test
+{
+  "circleCount": 79,
+  "sliderCount": 33,
+  "spinnerCount": 12,
+  "sliderTickCount": 82,
+  "circleSize": 4,
+  "approachRate": 8.3,
+  "accuracy": 7,
+  "drainRate": 5,
+  "artist": "Unknown",
+  "title": "Unknown",
+  "difficultyName": "Normal",
+  "author": "Unknown Creator",
+  "maxCombo": 239,
+  "length": 102500,
+  "minBPM": 120,
+  "maxBPM": 120,
+  "commonBPM": 120,
+  "baseVelocity": 1.6,
+  "tickRate": 1
+}

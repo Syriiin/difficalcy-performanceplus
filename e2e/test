@@ -1,21 +1,42 @@
 #!/bin/bash
-set -euxo pipefail
+set -euo pipefail
 
-hosts=("$DIFFICALCY_HOST" "${DIFFICALCY_SLIM_HOST:-}")
+SNAPSHOT_FILE="/e2e/snapshot.txt"
 
+hosts=("$DIFFICALCY_HOST" "$DIFFICALCY_FULL_HOST")
+
+fetch() {
+  echo "${*//$API/}" >> "$OUT"
+  curl --fail --silent --show-error "$@" | jq >> "$OUT"
+}
+
+outputs=()
 for host in "${hosts[@]}"; do
-  [ -z "$host" ] && continue
-  echo "=== Testing $host ==="
-  API="http://$host/api/calculators"
+  echo "Testing $host"
+  API="http://$host"
+  OUT="$(mktemp)"
+  outputs+=("$OUT")
 
-  curl --fail --silent --show-error "$API" | jq
+  fetch "$API/api/calculators"
 
-  curl --fail --silent --show-error "$API/osu/info" | jq
-  curl --fail --silent --show-error "$API/osu/calculation?BeatmapId=diffcalc-test" | jq
-  curl --fail --silent --show-error "$API/osu/calculation?BeatmapId=diffcalc-test" | jq
-  curl --fail --silent --show-error "$API/osu/calculation?BeatmapId=diffcalc-test&Mods=HD,DT" | jq
-  curl --fail --silent --show-error -X POST "$API/osu/batch/calculation" \
+  fetch "$API/api/calculators/osu/info"
+  fetch "$API/api/calculators/osu/calculation?BeatmapId=diffcalc-test"
+  fetch "$API/api/calculators/osu/calculation?BeatmapId=diffcalc-test"
+  fetch "$API/api/calculators/osu/calculation?BeatmapId=diffcalc-test&Mods=HD,DT"
+  fetch -X POST "$API/api/calculators/osu/batch/calculation" \
     -H "Content-Type: application/json" \
-    -d '[{"BeatmapId": "diffcalc-test"}, {"BeatmapId": "diffcalc-test", "Mods": [{"Acronym": "DT"}]}]' | jq
-  curl --fail --silent --show-error "$API/osu/beatmapdetails?BeatmapId=diffcalc-test" | jq
+    -d '[{"BeatmapId": "diffcalc-test"}, {"BeatmapId": "diffcalc-test", "Mods": [{"Acronym": "DT"}]}]'
+  fetch "$API/api/calculators/osu/beatmapdetails?BeatmapId=diffcalc-test"
 done
+
+if [ "${UPDATE_SNAPSHOTS:-false}" = "true" ]; then
+  cat "${outputs[0]}" > "$SNAPSHOT_FILE"
+  echo "Snapshot updated: $SNAPSHOT_FILE"
+  exit 0
+fi
+
+for out in "${outputs[@]:1}"; do
+  diff -u "${outputs[0]}" "$out"
+done
+diff -u "$SNAPSHOT_FILE" "${outputs[0]}"
+echo "Snapshots match."

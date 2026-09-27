@@ -3,32 +3,56 @@ services:
     build: ./e2e
     environment:
       - DIFFICALCY_HOST=difficalcy-performanceplus:80
-      - DIFFICALCY_SLIM_HOST=difficalcy-performanceplus-slim:80
+      - DIFFICALCY_FULL_HOST=difficalcy-performanceplus-full:80
+      - UPDATE_SNAPSHOTS
+    volumes:
+      - ./e2e/snapshot.txt:/e2e/snapshot.txt
     depends_on:
       - difficalcy-performanceplus
-      - difficalcy-performanceplus-slim
+      - difficalcy-performanceplus-full
 
   beatmap-server:
     image: caddy:2-alpine
     volumes:
       - ./e2e/beatmaps:/usr/share/caddy:ro
 
-  difficalcy-performanceplus:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - BEATMAP_DOWNLOAD_URL=http://beatmap-server:80/{beatmapId}.osu
-    depends_on:
-      - beatmap-server
+  cache:
+    image: redis:8
+    volumes:
+      - redis-data:/data
 
-  difficalcy-performanceplus-slim:
+  difficalcy-performanceplus:
     build:
       context: .
-      target: publish-slim
+      target: publish
       args:
         - OSU_COMMIT_HASH
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - REDIS_CONFIGURATION=cache:6379
       - BEATMAP_DOWNLOAD_URL=http://beatmap-server:80/{beatmapId}.osu
+    volumes:
+      - beatmaps:/beatmaps
     depends_on:
       - beatmap-server
       - cache
+
+  difficalcy-performanceplus-full:
+    build:
+      context: .
+      target: publish-full
+      args:
+        - OSU_COMMIT_HASH
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - REDIS_CONFIGURATION=cache:6379
+      - BEATMAP_DOWNLOAD_URL=http://beatmap-server:80/{beatmapId}.osu
+    volumes:
+      - beatmaps:/beatmaps
+    depends_on:
+      - beatmap-server
+      - cache
+
+volumes:
+  beatmaps:
+  redis-data:
