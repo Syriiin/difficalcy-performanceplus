@@ -14,11 +14,17 @@
     {
       devShells.${system}.default = pkgs.mkShell {
         packages = with pkgs; [
-          nixfmt
-          gnumake
+          nixfmt-tree
+          just
           dotnet-sdk_10
           gh
         ];
+
+        shellHook = ''
+          export DIFFICALCY_PERFORMANCEPLUS_FLAKE_HASH="$(cat flake.nix flake.lock | sha256sum | cut -d' ' -f1)"
+        '';
       };
+
+      formatter.${system} = pkgs.nixfmt-tree;
     };
 }

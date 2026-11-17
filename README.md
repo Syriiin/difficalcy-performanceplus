@@ -52,3 +52,12 @@ Get your lazer powered calculations:
 ```
 
 See [the difficalcy Getting Started page](https://difficalcy.syrin.me/getting-started) for a full example setup.
+
+## Development Setup
+
+```sh
+nix develop
+just start-dev
+```
+
+Run `just` to list available commands.
