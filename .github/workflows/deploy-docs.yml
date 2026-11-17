@@ -9,7 +9,8 @@ jobs:
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
-      - run: make build-docs
+      - uses: cachix/install-nix-action@v31
+      - run: nix develop --command just build-docs
       - name: Upload artifacts
         uses: actions/upload-pages-artifact@v5
         with:
