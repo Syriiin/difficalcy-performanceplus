@@ -121,8 +121,7 @@ namespace Difficalcy.PerformancePlus.Services
             var mods = score.Mods.Select(ModToLazerMod).ToArray();
             var beatmap = workingBeatmap.GetPlayableBeatmap(OsuRuleset.RulesetInfo, mods);
 
-            var combo =
-                score.Combo
+            var combo = score.Combo
                 ?? beatmap.HitObjects.Count
                     + beatmap.HitObjects.OfType<Slider>().Sum(s => s.NestedHitObjects.Count - 1);
             var statistics = GetHitResults(
